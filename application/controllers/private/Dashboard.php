@@ -5,7 +5,7 @@ class Dashboard extends Private_Controller {
 
 	public function index()
 	{
-		return view('private.dashboard');
+		return view('private.dashboard', $this->vars);
 	}
 
 }

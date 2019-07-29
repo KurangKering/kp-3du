@@ -8,7 +8,7 @@
 	<meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
 	<meta name="author" content="Łukasz Holeczek">
 	<meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-	<title>CoreUI Free Bootstrap Admin Template</title>
+	<title>##</title>
 	<!-- Icons-->
 	<link href="{{ site_url('assets/templates/backend/vendors/@coreui/icons/css/coreui-icons.min.css') }}" rel="stylesheet">
 	<link href="{{ site_url('assets/templates/backend/vendors/flag-icon-css/css/flag-icon.min.css') }}" rel="stylesheet">
@@ -18,7 +18,10 @@
 	<link href="{{ site_url('assets/plugins/datatables/css/dataTables.bootstrap.min.css') }}" rel="stylesheet">
 	<link href="{{ site_url('assets/plugins/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
 	<link href="{{ site_url('assets/plugins/izimodal/css/iziModal.min.css') }}" rel="stylesheet">
-	<link href="{{ site_url('assets/plugins/sweetalert2/dist/sweetalert2.min.css') }}" rel="stylesheet">
+	<link href="{{ site_url('assets/plugins/izimodal/css/iziModal.min.css') }}" rel="stylesheet">
+	<link href="{{ site_url('assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css') }}" rel="stylesheet">
+	<link href="{{ site_url('assets/plugins/clockpicker/dist/jquery-clockpicker.min.css') }}" rel="stylesheet">
+	<link href="{{ site_url('assets/plugins/clockpicker/dist/bootstrap-clockpicker.min.css') }}" rel="stylesheet">
 
 
 	<!-- Main styles for this application-->
@@ -30,6 +33,7 @@
 			white-space: nowrap;
 		}
 	</style>
+	@yield('css')
 	<script>
 		const SITE_URL = '<?= site_url() ?>';
 	</script>
@@ -47,136 +51,133 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<ul class="nav navbar-nav ml-auto">
-			<li class="nav-item dropdown">
-				<a class="nav-link" data-toggle="dropdown" href="{{ site_url('assets/templates/backend/#') }}" role="button" aria-haspopup="true" aria-expanded="false">
-					<img class="img-avatar" src="{{ site_url('assets/templates/backend/img/avatars/6.jpg') }}" alt="admin@bootstrapmaster.com">
+			<li class="nav-item dropdown mr-3">
+				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+					{{ $currentRole->role_name }}
 				</a>
 				<div class="dropdown-menu dropdown-menu-right">
 					<div class="dropdown-header text-center">
 						<strong>Account</strong>
 					</div>
-					<a class="dropdown-item" href="{{ site_url('assets/templates/backend/#') }}">
-						<i class="fa fa-lock"></i> Logout
-					</a>
-				</div>
-			</li>
-		</ul>
-	</header>
-	<div class="app-body">
-		<div class="sidebar">
-			<nav class="sidebar-nav">
-				<ul class="nav">
-					<li class="nav-title">Daftar Menu</li>
-					<li class="nav-item nav-dropdown">
-						<a class="nav-link nav-dropdown-toggle" href="{{ site_url('assets/templates/backend/#') }}">
-							<i class="nav-icon icon-cursor"></i> Buttons
-						</a>
-						<ul class="nav-dropdown-items">
-							<li class="nav-item">
-								<a class="nav-link" href="{{ site_url('assets/templates/backend/buttons/buttons.html') }}">
-									<i class="nav-icon icon-cursor"></i> Buttons
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{ site_url('assets/templates/backend/buttons/button-group.html') }}">
-									<i class="nav-icon icon-cursor"></i> Buttons Group
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{ site_url('assets/templates/backend/buttons/dropdowns.html') }}">
-									<i class="nav-icon icon-cursor"></i> Dropdowns
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{ site_url('assets/templates/backend/buttons/brand-buttons.html') }}">
-									<i class="nav-icon icon-cursor"></i> Brand Buttons
-								</a>
-							</li>
-						</ul>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ site_url('private/dashboard') }}">
-							<i class="nav-icon icon-pie-chart"></i> Dashboard
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ site_url('private/ruangan') }}">
-							<i class="nav-icon icon-pie-chart"></i> Ruangan
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ site_url('private/user') }}">
-							<i class="nav-icon icon-pie-chart"></i> Pengguna
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ site_url('private/lembar_disposisi') }}">
-							<i class="nav-icon icon-pie-chart"></i> Lembar Disposisi
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ site_url('private/isi_disposisi') }}">
-							<i class="nav-icon icon-pie-chart"></i> Isi Disposisi
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="{{ site_url('private/peminjaman_ruangan') }}">
-							<i class="nav-icon icon-pie-chart"></i> Peminjaman Ruangan
-						</a>
-					</li><li class="nav-item">
-						<a class="nav-link" href="{{ site_url('private/pengajuan_inventaris') }}">
-							<i class="nav-icon icon-pie-chart"></i> Pengajuan Inventaris
-						</a>
-					</li>
-				</ul>
-			</nav>
-			<button class="sidebar-minimizer brand-minimizer" type="button"></button>
+					<a class="dropdown-item" href="{{ site_url('logout') }}">
+						<i class="fa fa-lock"></i> Logout</a>
+					</div>
+				</li>
+
+			</ul>
+		</header>
+		<div class="app-body">
+			<div class="sidebar">
+				<nav class="sidebar-nav">
+					<ul class="nav">
+						<li class="nav-title">Daftar Menu</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ site_url('private/dashboard') }}">
+								<i class="nav-icon icon-pie-chart"></i> Dashboard
+							</a>
+						</li>
+
+						@if(strtolower($currentRole->role_name) == 'umum')
+						<li class="nav-item nav-dropdown">
+							<a class="nav-link nav-dropdown-toggle" href="{{ site_url('assets/templates/backend/#') }}">
+								<i class="nav-icon icon-pie-chart"></i> Master Data
+							</a>
+							<ul class="nav-dropdown-items">
+								<li class="nav-item">
+									<a class="nav-link" href="{{ site_url('private/ruangan') }}">
+										<i class="nav-icon icon-pie-chart"></i> Ruangan
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{{ site_url('private/daftar_barang') }}">
+										<i class="nav-icon icon-pie-chart"></i> Daftar Barang
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{{ site_url('private/user') }}">
+										<i class="nav-icon icon-pie-chart"></i> Pengguna
+									</a>
+								</li>
+								
+								
+							</ul>
+						</li>
+						@endif
+						
+						<li class="nav-item">
+							<a class="nav-link" href="{{ site_url('private/lembar_disposisi') }}">
+								<i class="nav-icon icon-pie-chart"></i> Lembar Disposisi
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ site_url('private/isi_disposisi') }}">
+								<i class="nav-icon icon-pie-chart"></i> Isi Disposisi
+							</a>
+						</li>
+						@if(strtolower($currentRole->role_name) == 'umum')
+
+						<li class="nav-item">
+							<a class="nav-link" href="{{ site_url('private/peminjaman_ruangan') }}">
+								<i class="nav-icon icon-pie-chart"></i> Peminjaman Ruangan
+							</a>
+						</li><li class="nav-item">
+							<a class="nav-link" href="{{ site_url('private/peminjaman_barang') }}">
+								<i class="nav-icon icon-pie-chart"></i> Peminjaman Barang
+							</a>
+						</li>
+						@endif
+					</ul>
+				</nav>
+				<button class="sidebar-minimizer brand-minimizer" type="button"></button>
+			</div>
+
+			@yield('content')
+
 		</div>
 
-		@yield('content')
-		
-	</div>
+		<footer class="app-footer">
+			<div>
+				<a href="{{ site_url('assets/templates/backend/https://coreui.io') }}">CoreUI
+				</a>
+				<span>&copy; 2018 creativeLabs.</span>
+			</div>
+			<div class="ml-auto">
+				<span>Powered by</span>
+				<a href="{{ site_url('assets/templates/backend/https://coreui.io') }}">CoreUI
+				</a>
+			</div>
+		</footer>
+		<!-- CoreUI and necessary plugins-->
+		<script src="{{ site_url('assets/templates/backend/vendors/jquery/js/jquery.min.js') }}"></script>
+		<script src="{{ site_url('assets/templates/backend/vendors/popper.js/js/popper.min.js') }}"></script>
+		<script src="{{ site_url('assets/templates/backend/vendors/bootstrap/js/bootstrap.min.js') }}"></script>
+		<script src="{{ site_url('assets/templates/backend/vendors/pace-progress/js/pace.min.js') }}"></script>
+		<script src="{{ site_url('assets/templates/backend/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js') }}"></script>
 
-	<footer class="app-footer">
-		<div>
-			<a href="{{ site_url('assets/templates/backend/https://coreui.io') }}">CoreUI
-			</a>
-			<span>&copy; 2018 creativeLabs.</span>
-		</div>
-		<div class="ml-auto">
-			<span>Powered by</span>
-			<a href="{{ site_url('assets/templates/backend/https://coreui.io') }}">CoreUI
-			</a>
-		</div>
-	</footer>
-	<!-- CoreUI and necessary plugins-->
-	<script src="{{ site_url('assets/templates/backend/vendors/jquery/js/jquery.min.js') }}"></script>
-	<script src="{{ site_url('assets/templates/backend/vendors/popper.js/js/popper.min.js') }}"></script>
-	<script src="{{ site_url('assets/templates/backend/vendors/bootstrap/js/bootstrap.min.js') }}"></script>
-	<script src="{{ site_url('assets/templates/backend/vendors/pace-progress/js/pace.min.js') }}"></script>
-	<script src="{{ site_url('assets/templates/backend/vendors/perfect-scrollbar/js/perfect-scrollbar.min.js') }}"></script>
+		<script src="{{ site_url('assets/js/custom.js') }}"></script>
 
 
 
-
-	<script src="{{ site_url('assets/templates/backend/vendors/@coreui/coreui/js/coreui.min.js') }}"></script>
-	<!-- Plugins and scripts required by this view-->
-
-	
-	<script src="{{ site_url('assets/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ site_url('assets/plugins/izimodal/js/iziModal.min.js') }}"></script>
-	<script src="{{ site_url('assets/plugins/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
+		<script src="{{ site_url('assets/templates/backend/vendors/@coreui/coreui/js/coreui.min.js') }}"></script>
+		<!-- Plugins and scripts required by this view-->
 
 
-	<script src="{{ site_url('assets/js/custom.js') }}"></script>
+		<script src="{{ site_url('assets/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
+		<script src="{{ site_url('assets/plugins/izimodal/js/iziModal.min.js') }}"></script>
+		<script src="{{ site_url('assets/plugins/sweetalert2/dist/sweetalert2.all.min.js') }}"></script>
+		<script src="{{ site_url('assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+		<script src="{{ site_url('assets/plugins/clockpicker/dist/jquery-clockpicker.min.js') }}"></script>
+		<script src="{{ site_url('assets/plugins/clockpicker/dist/bootstrap-clockpicker.min.js') }}"></script>
 
-	@yield('js')
 
-	<style>
 
-		.swal2-container {
-			z-index: 20000;
-		}
-	</style>
-</body>
-</html>
+		@yield('js')
+
+		<style>
+
+			.swal2-container {
+				z-index: 20000;
+			}
+		</style>
+	</body>
+	</html>

@@ -1,146 +1,225 @@
-  <div id="modal-create-lembar-disposisi" style="display: none;">
+  <style>
+    .popover {
+      z-index: 60000 !important;
+    }
+  </style>
 
-
+  <v id="modal-create-lembar-disposisi" style="display: none;">
     <div class="card">
+     <form class="form-horizontal" action="" id="frm-create-lembar-disposisi" method="post" enctype="multipart/form-data">
+
       <div class="card-body">
+
        <div id="error-message">
 
        </div>
-       <form class="form-horizontal" action="" id="frm-create-lembar-disposisi" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="type" value="get">
-        <input type="hidden" name="idPeminjamanRuangan" value="">
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="nama">Nama</label>
-          <div class="col-md-8">
-            <input class="form-control" readonly name="nama" id="nama" type="text">
+       <input type="hidden" name="peminjamanRuanganId" value="">
+       <input type="hidden" name="valueSubmit" value="">
+       <div class="form-group row">
+        <label class="col-md-4 col-form-label" for="nama">Nama</label>
+        <div class="col-md-8">
+          <input class="form-control" readonly name="nama" id="nama" type="text">
 
-          </div>
         </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="nama">NIP/NIM</label>
-          <div class="col-md-8">
-            <input class="form-control" readonly name="number_id" id="number_id" type="text">
+      </div>
+      
+      
+      <div class="form-group row">
+        <label class="col-md-4 col-form-label" for="nama">Kegiatan</label>
+        <div class="col-md-8">
+          <input class="form-control" readonly name="kegiatan" id="kegiatan" type="text">
 
-          </div>
         </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="nama">Pekerjaan</label>
-          <div class="col-md-8">
-            <input class="form-control" readonly name="pekerjaan" id="pekerjaan" type="text">
+      </div>
+      <div class="form-group row">
+        <label class="col-md-4 col-form-label" for="nama">Ruangan</label>
+        <div class="col-md-8">
+          <input class="form-control" readonly name="ruangan" id="ruangan" type="text">
 
-          </div>
         </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="nama">Keperluan</label>
-          <div class="col-md-8">
-            <input class="form-control" readonly name="keperluan" id="keperluan" type="text">
+      </div>
+      <div class="form-group row">
+        <label class="col-md-4 col-form-label" for="waktu">Waktu Peminjaman</label>
+        <div class="col-md-8">
+          <input class="form-control" readonly name="waktu" id="waktu" type="text">
 
-          </div>
         </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="nama">Ruangan</label>
-          <div class="col-md-8">
-            <input class="form-control" readonly name="ruangan" id="ruangan" type="text">
-
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="nama">Waktu</label>
-          <div class="col-md-8">
-            <input class="form-control" readonly name="waktu" id="waktu" type="text">
-
-          </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-md-4 col-form-label" for="nama">Tanggal Peminjaman</label>
-          <div class="col-md-8">
-            <input class="form-control" readonly name="tgl_peminjaman" id="tgl_peminjaman" type="text">
-
-          </div>
-        </div>
-
-      </form>
+      </div>
 
     </div>
-    
-  </div>
-  <div class="card">
+    <?php
+    $disposisiRoles = hHasDisposisiRoles();
+    ?>
     <div class="card-body">
       <div class="form-group row">
-        <label class="col-md-3 col-form-label">Disposisi Kepada</label>
-        <div class="col-md-9 col-form-label">
-          <?php $__currentLoopData = hIsDisposisiRoles(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+        <label class="col-md-4 col-form-label">Disposisi Kepada</label>
+        <div class="col-md-8 col-form-label">
 
           <div class="form-check">
-            <input class="form-check-input" id="radio<?php echo e($index); ?>" type="radio" value="<?php echo e($index); ?>" name="radios">
-            <label class="form-check-label" for="radio<?php echo e($index); ?>"><?php echo e($role); ?></label>
+            <input class="form-check-input" checked="" id="disposisiSatu" type="radio" value="<?php echo e($disposisiRoles['1']['id']); ?>" name="disposisiSatu">
+            <label class="form-check-label" for="disposisiSatu"><?php echo e($disposisiRoles['1']['role_name']); ?></label>
           </div>
-          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-          
-          
+
+
         </div>
       </div>
     </div>
     <div class="card-footer text-right">
-      <button class="btn btn-primary mr-1" type="submit">Submit</button>
+      <button class="btn btn-danger mr-1 btn-create-disposisi"  data-value="-1" type="button">Tolak</button>
+      <button class="btn btn-primary mr-1 btn-create-disposisi" data-value="1" type="button">Submit</button>
     </div>
-  </div>
 
+  </form>
+
+</div>
 </div>
 
 
-<div id="modal-detail" style="display: none;">
-  <div class="box">
-    <div class="box-header"></div>
-    <div class="box-body">
-      <form  id="frm-detail" class="form-horizontal">
-        <div class="form-group ">
-          <label for="" class="control-label col-lg-3">Nama</label>
-          <div class="col-lg-9">
-            <input type="text" readonly class="form-control" id="det-nama">
-          </div>
-        </div>
-        <div class="form-group ">
-          <label for="" class="control-label col-lg-3">Username</label>
-          <div class="col-lg-9">
-            <input type="text" readonly class="form-control" id="det-username">
-          </div>
-        </div>
-        <div class="form-group ">
-          <label for="" class="control-label col-lg-3">Email</label>
-          <div class="col-lg-9">
-            <input type="text" readonly class="form-control" id="det-email">
-          </div>
-        </div>
-        <div class="form-group ">
-          <label for="" class="control-label col-lg-3">Sub Bidang</label>
-          <div class="col-lg-9">
-            <input type="text" readonly class="form-control" id="det-subbidang">
-          </div>
-        </div>
-        <div class="form-group ">
-          <label for="" class="control-label col-lg-3">Hak Akses</label>
-          <div class="col-lg-9">
-            <input type="text" readonly class="form-control" id="det-hak-akses">
-          </div>
-        </div>
-        <div class="box-footer">
-         <div class="text-center">
-           <button data-iziModal-close data-iziModal-transitionOut="bounceOutDown" class="btn bg-olive">Tutup</button>
-         </div>
-       </div>
-     </form>
+
+<div id="modal-show-disposisi" style="display: none;">
+  <div class="card">
+   <form class="form-horizontal" action="" id="frm-detail-peminjaman" method="post" enctype="multipart/form-data" >
+
+    <div class="card-body">
+
+     <div id="error-message">
+
+     </div>
+     <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="detNama">Nama</label>
+      <div class="col-md-9">
+        <input class="form-control" id="detNama" onkeydown="return false" type="text" name="detNama">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="detKegiatan">Kegiatan</label>
+      <div class="col-md-9">
+        <input class="form-control" id="detKegiatan" onkeydown="return false" type="text" name="detKegiatan">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 col-form-label" for="detRuangan">Ruangan</label>
+      <div class="col-md-9">
+        <input class="form-control" id="detRuangan" onkeydown="return false" type="text" name="detRuangan">
+      </div>
+    </div><div class="form-group row">
+      <label class="col-md-3 col-form-label" for="detWaktu">Waktu</label>
+      <div class="col-md-9">
+        <input class="form-control" id="detWaktu" onkeydown="return false" type="text" name="detWaktu">
+      </div>
+    </div>
 
 
-   </div>
- </div>
+
+  </div>
+
+
+  <div class="card-footer text-right">
+  </div>
+
+</form>
+
+</div>
+<div class="card">
+ <form class="form-horizontal" action="" id="frm-show-disposisi" method="post" enctype="multipart/form-data">
+
+  <div class="card-body">
+
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th style="text-align: center">Dari</th>
+          <th style="text-align: center">Kepada</th>
+          <th style="text-align: center">Isi Disposisi</th>
+        </tr>
+      </thead>
+      <tbody id="tbody-isi-disposisi">
+
+      </tbody>
+    </table>
+
+    <div id="error-message">
+
+    </div>
+    <input type="hidden" name="valueSubmit" value="">
+    <input type="hidden" name="peminjaman_ruangan_id" value="">
+
+
+  </div>
+  <hr>
+  <div class="submit-area" style="display: none">
+
+    <div class="card-body">
+      <div class="hide-dulu" style="display: none">
+        <form action="" class="form-horizontal">
+
+          <div class="form-group row" id="data_1">
+            <label class="col-md-4 col-form-label" for="detWaktuMulai">Tanggal </label>
+            <div class="col-md-8">
+              <div class="input-group-date">
+                <input onkeydown="return false" class="form-control date" id="inputTanggal" type="text" name="inputTanggal" >
+
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group row" id="data_2">
+            <label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Mulai </label>
+            <div class="col-md-8">
+              <div class="input-group clockpicker" id="waktu-mulai">
+                <input onkeydown="return false"  type="text" name="inputWaktuMulai" id="inputWaktuMulai" class="form-control">
+
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group row" id="data_3">
+            <label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Selesai </label>
+            <div class="col-md-8">
+              <div class="input-group clockpicker" id="waktu-selesai">
+                <input onkeydown="return false"  type="text" name="inputWaktuSelesai" id="inputWaktuSelesai" class="form-control">
+
+              </div>
+
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="row">
+        <div class="col-md-6">
+
+          <button class="btn btn-danger mr-1 btn-submit-peminjaman"  data-value="-1" type="button">Tolak</button>
+        </div>
+        <div class="col-md-6 text-right" >
+          <button class="btn btn-primary mr-1 " id="btnTerima" type="button">Terima</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</form>
+
+</div>
 </div>
 
 
 <?php $__env->startSection('js'); ?>
 ##parent-placeholder-93f8bb0eb2c659b85694486c41717eaf0fe23cd4##
 <script>
-  $("#modal-create-lembar-disposisi").iziModal({
+
+  let $modalShow = $("#modal-show-disposisi");
+  let $modalCreate = $("#modal-create-lembar-disposisi");
+
+  
+  
+  $modalCreate.iziModal({
     subtitle: '',
     zindex: 5000,
 
@@ -153,39 +232,161 @@
     },
 
   });
-  $("#modal-detail").iziModal({
-    title: 'Detail Pengguna',
+  var tanggalDate = '';
+  var varWaktuMulai = '';
+  var varWaktuSelesai = '';
+
+  $modalShow.iziModal({
     subtitle: '',
-    headerColor: '#88A0B9',
+    zindex: 5000,
+    width: 800,
+
+    headerColor: '#6777ef',
     onOpening: function(modal){
-      modal.startLoading();
+
     },
     onOpened: function(modal){
-      modal.stopLoading();
+
+
     },
+    onClosed : function(modal) {
+      tanggalDate.datepicker("destroy");
+    }
 
   });
-  $("#frm-create-lembar-disposisi").submit(function(e) {
+
+
+  $(".btn-create-disposisi").click(function(e) {
     e.preventDefault();
-    submit_ruangan();
+    let val = $(this).data('value');
+    submitCreateLembarDisposisi(val);
 
-  })
-  var show_detail = function(id)
+  });
+  $(".btn-submit-peminjaman").click(function(e) {
+    e.preventDefault();
+    let val = $(this).data('value');
+    submitPeminjaman(val);
+
+  });
+  var show_disposisi = function(id)
   {
-    axios.get(SITE_URL+id)
-    .then(response => {
-      res = response.data;
-      res.subbid = res.subbidang ? res.subbidang.nama : '-';
-      $("#det-nama").val(res.name);
-      $("#det-username").val(res.username);
-      $("#det-email").val(res.email);
-      $("#det-subbidang").val(res.subbid);
-      $("#det-hak-akses").val(res.hak_akses);
-      $("#modal-detail").iziModal("open");  
-    })
-    .catch(err => {
 
+
+    url = SITE_URL + 'private/lembar_disposisi/info/' + id;
+    let $el = $("#tbody-isi-disposisi");
+    $el.empty();
+    $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: 'json',
     })
+    .done(function(response) {
+
+
+      $("#btnTerima").click(function(e) {
+        location.href = SITE_URL + 'private/peminjaman_ruangan/terima_peminjaman/' + response.peminjaman_ruangan_id;
+      });
+
+
+
+      $("input[name='peminjaman_ruangan_id']").val(response.peminjaman_ruangan_id);
+      let peminjaman = response.peminjaman_ruangan;
+
+      $("#detNama").val(peminjaman.nama);
+      $("#detKegiatan").val(peminjaman.kegiatan);
+      $("#detRuangan").val(peminjaman.ruangan.nama);
+      $("#detWaktu").val(peminjaman.tanggalWaktu);
+
+
+      $('.submit-area').css('display', 'none'); 
+
+      if (response.status == '2') 
+      {
+        if (peminjaman.status != '2' && peminjaman.status != '-1') {
+          $(".submit-area").css('display', 'unset');
+        }
+      }
+
+
+
+      $.each(response.isi_disposisi, function(index, val) {
+        var tr = $("<tr/>");
+        tr.append($("<td/>", {
+          text  : val.from_role.role_name,
+          style   : "vertical-align:middle;width:20%;",
+        }))
+        .append($("<td/>", {
+          text  : val.destination_role.role_name,
+          style   : "vertical-align:middle;width:20%;",
+          class : 'text-center'
+        }))
+        .append($("<td/>", {
+          text  : val.isiDisposisi,
+          style   : "vertical-align:middle;",
+          class : 'text-center'
+        }));
+        $el.append(tr);
+      });
+
+      $modalShow.iziModal('setTitle', 'Data Disposisi');
+      $modalShow.iziModal("open");
+      tanggalDate = $('#data_1 .date').datepicker({
+        keyboardNavigation: false,
+        forceParse: false,
+        calendarWeeks: true,
+        autoclose: true,
+        format: "dd-mm-yyyy",
+      });
+      varWaktuMulai =  $('#waktu-mulai').clockpicker({
+        autoclose: true,
+        placement: 'top',
+        afterDone : function() {
+         var mulai =  varWaktuMulai.find('input').val();
+         var selesai =  varWaktuSelesai.find('input').val();
+
+         if (selesai != '' && selesai < mulai) 
+         {
+          alert('selesai lebih kecil dari mulai');
+        }
+
+      }
+
+    });
+
+      varWaktuSelesai = $('#waktu-selesai').clockpicker({
+        autoclose: true,
+        placement: 'top',
+        afterDone: function() {
+          var mulai =  varWaktuMulai.find('input').val();
+          var selesai =  varWaktuSelesai.find('input').val();
+
+          if (mulai != '' && selesai < mulai) 
+          {
+            alert('selesai lebih kecil dari mulai');
+          }
+        },
+      });
+
+
+
+      varWaktuMulai.find('input').val(response.peminjaman_ruangan.waktuMulai);
+      varWaktuSelesai.find('input').val(response.peminjaman_ruangan.waktuSelesai);
+      tanggalDate.datepicker('update', response.peminjaman_ruangan.tanggal);
+
+      document.activeElement.blur()
+
+
+
+      console.log("success");
+    })
+    .fail(function() {
+      console.log("error");
+    })
+    .always(function() {
+      console.log("complete");
+    });
+    
+
   }
   var show_modal = function(id)
   {
@@ -204,7 +405,7 @@
 
         $("button[type='submit']").text('Disposisi');
 
-        $("#modal-create-lembar-disposisi").iziModal('setTitle', 'Form Lembar Disposisi');
+        $modalCreate.iziModal('setTitle', 'Form Lembar Disposisi');
 
         set_modal_data(data);
 
@@ -216,7 +417,7 @@
       .always(function() {
         console.log("complete retrieve");
       });
-      
+
 
     }
     else
@@ -224,35 +425,32 @@
       $("input[name='type']").val("new");
       $("button[type='submit']").text('Tambah');
 
-      $("#modal-create-lembar-disposisi").iziModal('setTitle', 'Form Input Pengguna Baru');
-      $("#modal-create-lembar-disposisi").iziModal("open");
+      $modalCreate.iziModal('setTitle', 'Form Input Pengguna Baru');
+      $modalCreate.iziModal("open");
     }
   }
   var set_modal_data = function(data)
   {
 
     $("#error-message").html("");
-    $("input[name='idPeminjamanRuangan']").val(data.id);
+    $("input[name='peminjamanRuanganId']").val(data.id);
     $("input[name='nama']").val(data.nama);
-    $("input[name='number_id']").val(data.number_id);
-    $("input[name='pekerjaan']").val(data.pekerjaan);
-    $("input[name='keperluan']").val(data.keperluan.keperluan);
+    $("input[name='kegiatan']").val(data.kegiatan);
     $("input[name='ruangan']").val(data.ruangan.nama);
-    $("input[name='waktu']").val(data.waktu.mulai + ' - '+ data.waktu.selesai);
-    $("input[name='tgl_peminjaman']").val(data.tgl_peminjaman);
+    $("input[name='waktu']").val(data.waktu_mulai + ' - '+ data.waktu_selesai);
 
-    $("#modal-create-lembar-disposisi").iziModal('open');
+    $modalCreate.iziModal('open');
     $("#modal-create-lembar-disposisi .iziModal-wrap").scrollTop(0);            
   }
-  var submit_ruangan = function()
+
+  var submitPeminjaman = function(valSubmit)
   {
-    var type = $("input[name='type']").val();
-    var uri = type == 'new'? 'store' : type == 'edit' ? 'update' : 'delete';
-    var url = SITE_URL + 'private/ruangan/' + uri;
 
-    $("button[type='submit']").attr('disabled', true);
-    var formData = $('#frm-create-lembar-disposisi').serializeArray();
 
+    var url = SITE_URL + 'private/peminjaman_ruangan/update';
+    $("input[name='valueSubmit']").val(valSubmit);
+    $(".btn-submit-peminjaman").attr('disabled', true);
+    var formData = $('#frm-show-disposisi').serializeArray();
     $.ajax({
       url: url,
       type: 'POST',
@@ -260,7 +458,7 @@
       data: formData,
     })
     .done(function(resp) {
-
+      console.log(resp);
 
       $('#error-message').html("");
       if (resp.status == 'error') 
@@ -291,7 +489,60 @@
       console.log("error post");
     })
     .always(function() {
-      $("button[type='submit']").attr('disabled', false);
+      $(".btn-submit-peminjaman").attr('disabled', false);
+      console.log("complete post");
+    });
+
+
+  }
+  var submitCreateLembarDisposisi = function(valSubmit)
+  {
+
+
+    var url = SITE_URL + 'private/lembar_disposisi/create';
+    $("input[name='valueSubmit']").val(valSubmit);
+    $(".btn-create-disposisi").attr('disabled', true);
+    var formData = $('#frm-create-lembar-disposisi').serializeArray();
+
+    $.ajax({
+      url: url,
+      type: 'POST',
+      dataType: 'json',
+      data: formData,
+    })
+    .done(function(resp) {
+      console.log(resp);
+
+      $('#error-message').html("");
+      if (resp.status == 'error') 
+      {
+       $("#error-message").html(
+         `<div class=\"alert alert-danger\">
+         <strong>Ooops!</strong> Terdapat Error.<br><br>
+         `
+         +resp.messages+
+         `
+         </div>
+         `);
+       $("#modal-create-lembar-disposisi .iziModal-wrap").scrollTop(0);  
+     } else if (resp.status == 'success')
+     {
+      swalInfo('Berhasil', 'success','','2000')
+      .then((result) => {
+
+        location.reload();
+        
+      })
+    } else 
+    {
+      alert('gagal');
+    }
+  })
+    .fail(function() {
+      console.log("error post");
+    })
+    .always(function() {
+      $(".btn-create-disposisi").attr('disabled', false);
       console.log("complete post");
     });
 

@@ -9,7 +9,7 @@ class User extends Private_Controller {
 	}
 	public function index()
 	{
-		$this->vars['data_user'] = $this->M_users->get();
+		$this->vars['data_user'] = $this->M_users->latest()->get();
 		$this->vars['roles'] = $this->M_roles->pluck('role_name', 'id');
 		return view('private.user.index', $this->vars);
 

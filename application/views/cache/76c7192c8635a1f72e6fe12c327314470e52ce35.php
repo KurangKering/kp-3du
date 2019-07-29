@@ -1,6 +1,10 @@
 <?php $__env->startSection('css'); ?>
 
-
+<style>
+	th {
+		text-align: center;
+	}
+</style>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <main class="main">
@@ -16,29 +20,61 @@
 
 						</div>
 						<div class="card-body">
-							<table class="table table-striped" id="table-ruangan">
+							<table class="table table-striped table-bordered" id="table-ruangan">
 								<thead>                                 
 									<tr>
 										
 										<th>ID</th>
-										<th>ID Surat</th>
-										<th>Jenis</th>
 										<th>Posisi</th>
+										<th>Tanggal</th>
 										<th>Status</th>
 										<th class="">Action</th>
 									</tr>
 								</thead>
 								<tbody>
-
 									<?php $__currentLoopData = $dataLembar; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lembar): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 									<tr>
 										<td><?php echo e($lembar->id); ?></td>
-										<td><?php echo e($lembar->reference->id); ?></td>
-										<td><?php echo e(hReferenceTable($lembar->reference_table)); ?></td>
-										<td><?php echo e($lembar->position); ?></td>
-										<td><?php echo e($lembar->status); ?></td>
-										<td>
-											<button class="btn btn-danger" onclick="delete_ruangan(<?php echo e($lembar->id); ?>)">Hapus</button>
+										<td><?php echo e($lembar->position_role->role_name); ?></td>
+										<td><?php echo e($lembar->tanggal); ?></td>
+
+										<td style="width: 1%; white-space: nowrap">
+											<?php
+											$statDis = '';
+											if ($lembar->status == '1') {
+												$statDis = 
+												'
+												<button onclick="show_disposisi('.$lembar->id.')" class="btn btn-sm btn-block btn-warning" type="button">
+												<span>
+												<i class="icon-reload icons font-2xl d-block"></i>
+												</span>
+												</button>
+												';
+											}
+											else if ($lembar->status == '2') {
+												$statDis = 
+												'
+												<button onclick="show_disposisi('.$lembar->id.')" class="btn btn-sm btn-block btn-success" type="button">
+												<span>
+												<i class="icon-check icons font-2xl d-block"></i>
+												</span>
+												</button>
+												';
+											}
+											?>
+											<?php echo $statDis; ?>
+
+											
+										</td>
+										
+										<td style="width: 1%; white-space: nowrap;"> 
+											<div class="input-group-btn">
+												<button onclick="show_peminjaman(<?php echo e($lembar->peminjaman_ruangan_id); ?>)" class="btn btn-sm btn-info">Lihat Peminjaman</button>
+												<?php if($lembar->availableDisposisi): ?>
+												<button class="btn btn-primary btn-sm btn-dark" onclick="show_modal(<?php echo e($lembar->id); ?>)">Isi Disposisi</button>
+												<?php endif; ?>
+											</div>
+
 										</td>
 									</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -53,15 +89,17 @@
 		</div>
 	</div>
 </main>
-<?php echo $__env->make('private.ruangan.modal_ruangan', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('private.peminjaman_ruangan.modal_create_lembar_disposisi', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>
 <!-- JS Libraies -->
 
 <script>
 
-	
+
 	$("#table-ruangan").dataTable({
+		"order" : [],
 		"columnDefs": [
 		{ "sortable": false, "targets": [2] }
 		]

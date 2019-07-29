@@ -16,18 +16,16 @@
 
 						</div>
 						<div class="card-body">
-							<table class="table table-striped" id="table-ruangan">
+							<table class="table table-striped table-bordered" id="table-ruangan">
 								<thead>                                 
 									<tr>
 										
 										<th>ID</th>
 										<th>ID Lembar Disposisi</th>
-										<th>ID Surat</th>
-										<th>Jenis</th>
-										<th>Isi</th>
 										<th>Dari</th>
-										<th>Tujuan</th>
-										<th class="">Action</th>
+										<th>Kepada</th>
+										<th>Isi</th>
+										<th>Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -36,13 +34,43 @@
 									<tr>
 										<td><?php echo e($isi->id); ?></td>
 										<td><?php echo e($isi->lembar_disposisi_id); ?></td>
-										<td><?php echo e($isi->lembar_disposisi->reference->id); ?></td>
-										<td><?php echo e(hReferenceTable($isi->lembar_disposisi->reference_table)); ?></td>
-										<td><?php echo e($isi->isi); ?></td>
-										<td><?php echo e($isi->from); ?></td>
-										<td><?php echo e($isi->destination); ?></td>
-										<td>
+										<td><?php echo e($isi->from_role->role_name); ?></td>
+										<td><?php echo e($isi->destination_role->role_name); ?></td>
+										<td style="width: 1%; white-space: nowrap">
+											<?php
+											$statDis = '';
+											if ($isi->status == '1') {
+												$statDis = 
+												'
+												<button class="btn btn-md btn-block btn-success" type="button">
+												<span>
+												<i class="icon-check icons font-2xl d-block"></i>
+												</span>
+												</button>
+												';
+											}
+											else if ($isi->status == '-1') {
+												$statDis = 
+												'
+												<button class="btn btn-md btn-block btn-danger" type="button">
+												<span>
+												<i class="icon-ban icons font-2xl d-block"></i>
+												</span>
+												</button>
+												';
+											}
+											?>
+											<?php echo $statDis; ?>
+
+											
 										</td>
+										<td style="width: 1%; white-space: nowrap" >
+											
+											<button onclick="show_disposisi(<?php echo e($isi->lembar_disposisi->id); ?>)" class="btn btn-md btn-block btn-info" type="button">
+												Data Disposisi
+											</button>
+										</td>
+										
 									</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 								</tbody>
@@ -56,6 +84,8 @@
 		</div>
 	</div>
 </main>
+<?php echo $__env->make('private.peminjaman_ruangan.modal_create_lembar_disposisi', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>
 <!-- JS Libraies -->
@@ -64,6 +94,7 @@
 
 	
 	$("#table-ruangan").dataTable({
+		"order" : [],
 		"columnDefs": [
 		{ "sortable": false, "targets": [2] }
 		]

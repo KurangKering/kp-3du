@@ -14,11 +14,12 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header">Data Pengguna
-
-							<button class="btn btn-primary" type="button" onclick="show_modal()">Tambah Pengguna</button>
+							<div class="card-header-actions">
+								<button class="btn btn-primary" type="button" onclick="show_modal()">Tambah Pengguna</button>
+							</div>
 						</div>
 						<div class="card-body">
-							<table class="table table-striped" id="table-user">
+							<table class="table table-striped table-bordered" id="table-user">
 								<thead>                                 
 									<tr>
 										
@@ -37,7 +38,7 @@
 										<td>{{ $user->email }}</td>
 										<td>{{ $user->username }}</td>
 										<td>{{ $user->role->role_name }}</td>
-										<td>
+										<td style="width: 1%; white-space: nowrap">
 											<button class="btn btn-warning" onclick="show_modal({{ $user->id }})">Edit</button>
 											<button class="btn btn-danger" onclick="delete_user({{ $user->id }})">Hapus</button>
 										</td>
@@ -63,6 +64,7 @@
 
 	
 	$("#table-user").dataTable({
+		"order" : [],
 		"columnDefs": [
 		{ "sortable": false, "targets": [2,3] }
 		]

@@ -1,0 +1,80 @@
+@extends('layouts.backend')
+@section('css')
+<style>
+	th {
+		text-align: center;
+	}
+</style>
+
+@endsection
+@section('content')
+<main class="main">
+	<!-- Breadcrumb-->
+	<ol class="breadcrumb"></ol>
+	<div class="container-fluid">
+		<div class="animated fadeIn">
+			<!-- /.row-->
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">Data Peminjaman Barang
+							<div class="card-header-actions">
+								<button type="button" class="btn btn-primary" onclick="location.href='{{ site_url('private/peminjaman_barang/create') }}'">Tambah Peminjaman</button>
+							</div>
+							
+						</div>
+						<div class="card-body">
+							<table class="table table-striped table-bordered" id="table-ruangan">
+								<thead>                                 
+									<tr>
+										
+										<th>Nama</th>
+										<th>Kegiatan</th>
+										<th style="white-space: nowrap; width: 1%;">Waktu</th>
+										<th>Status</th>
+										<th class="">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									@foreach($dataPeminjaman as $peminjaman)
+									<tr>
+										<td>{{ $peminjaman->nama }}</td>
+										<td>{{ $peminjaman->kegiatan }}</td>
+										<td style="white-space: nowrap; width: 1%;">{{ $peminjaman->tanggal }}</td>
+										<td style="white-space: nowrap; width: 1%;">{{  hStatusPeminjamanBarang($peminjaman->status) }}</td>
+										<td style="width: 1%; white-space: nowrap">
+											<button class="btn btn-primary" onclick="show_modal({{ $peminjaman->id }})">Detail</button>
+											<button class="btn btn-warning" onclick="location.href='{{ site_url('private/peminjaman_barang/edit/'.$peminjaman->id) }}'">Edit</button>
+										</td>
+									</tr>
+									@endforeach
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- /.col-->
+			</div>
+			<!-- /.row-->
+		</div>
+	</div>
+</main>
+@include('private.peminjaman_barang.modal_detail')
+@endsection
+@section('js')
+<!-- JS Libraies -->
+
+<script>
+
+	
+	$("#table-ruangan").dataTable({
+		"order" : [],
+		"columnDefs": [
+		{ "sortable": false, "targets": [2] }
+		]
+	});
+</script>
+
+
+@endsection

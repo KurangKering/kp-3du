@@ -14,11 +14,12 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header">Data Ruangan
-
-							<button class="btn btn-primary" type="button" onclick="show_modal()">Tambah Ruangan</button>
+							<div class="card-header-actions">
+								<button class="btn btn-primary" type="button" onclick="show_modal()">Tambah Ruangan</button>
+							</div>
 						</div>
 						<div class="card-body">
-							<table class="table table-striped" id="table-ruangan">
+							<table class="table table-striped table-bordered" id="table-ruangan">
 								<thead>                                 
 									<tr>
 										
@@ -33,7 +34,7 @@
 									<tr>
 										<td>{{ $ruangan->id }}</td>
 										<td>{{ $ruangan->nama }}</td>
-										<td>
+										<td style="width: 1%; white-space: nowrap">
 											<button class="btn btn-warning" onclick="show_modal({{ $ruangan->id }})">Edit</button>
 											<button class="btn btn-danger" onclick="delete_ruangan({{ $ruangan->id }})">Hapus</button>
 										</td>
@@ -59,6 +60,7 @@
 
 	
 	$("#table-ruangan").dataTable({
+		"order" : [],
 		"columnDefs": [
 		{ "sortable": false, "targets": [2] }
 		]

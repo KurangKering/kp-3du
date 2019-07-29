@@ -4,7 +4,15 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class M_ruangan extends Eloquent
 {
 	protected $table = 'ruangan';
-	protected $fillable = ['nama'];
+	protected $fillable = [
+		'nama_ruangan'
+	];
+
+
+	public function peminjaman_ruangan()
+	{
+		return $this->hasMany(new M_peminjaman_ruangan());
+	}
 
 	
 }

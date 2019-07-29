@@ -4,32 +4,31 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 class M_lembar_disposisi extends Eloquent
 {
 	protected $table = 'lembar_disposisi';
-	protected $fillable = ['nama','keperluan_id','ruangan_id','waktu_id','tgl_peminjaman'];
+	protected $fillable = [
+		'position_role_id',
+		'status',
+		'tanggal',
+		'peminjaman_ruangan_id',
+	];
 
 
 
-	public function reference() 
+	public function peminjaman_ruangan()
 	{
-		if ($this->reference_table === 'peminjaman_ruangan') {
-			return $this->belongsTo(new M_peminjaman_ruangan(), 'reference_id');
-		} 
-		else if ($this->reference_table === 'pengajuan_inventaris') {
-			return $this->belongsTo(new M_pengajuan_inventaris(), 'reference_id');
-		}
-
+		return $this->belongsTo(new M_peminjaman_ruangan());
 	}
 
-	public function keperluan()
+	public function position_role()
 	{
-		return $this->belongsTo(new M_keperluan());
+		return $this->belongsTo(new M_roles());
 	}
-	public function ruangan()
+
+	public function isi_disposisi()
 	{
-		return $this->belongsTo(new M_ruangan());
+		return $this->hasMany(new M_isi_disposisi(), 'lembar_disposisi_id', 'id');
 	}
-	public function waktu()
-	{
-		return $this->belongsTo(new M_waktu());
-	}
-	
+
+
+
+
 }

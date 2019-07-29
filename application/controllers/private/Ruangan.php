@@ -10,7 +10,7 @@ class Ruangan extends Private_Controller {
 	}
 	public function index()
 	{
-		$dataRuangan = $this->M_ruangan->get();
+		$dataRuangan = $this->M_ruangan->latest()->get();
 
 		$this->vars['dataRuangan'] = $dataRuangan;
 
