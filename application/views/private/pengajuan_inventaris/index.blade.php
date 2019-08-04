@@ -13,36 +13,31 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Daftar Barang
+						<div class="card-header">Daftar Pengajuan Inventaris
 							<div class="card-header-actions">
-								<button class="btn btn-primary" type="button" onclick="show_modal()">Tambah Barang</button>
+								<button class="btn btn-primary" type="button" onclick="location.href='{{ site_url('private/pengajuan_inventaris/create') }}'">Tambah Pengajuan</button>
 							</div>
 						</div>
 						<div class="card-body">
-							<table class="table table-striped table-bordered" id="table-barang">
+							<table class="table table-striped table-bordered" id="table-inventaris">
 								<thead>                                 
 									<tr>
 										
-										<th>ID Barang</th>
-										<th>Nama Barang</th>
-										<th>Total</th>
-										<th>Sedang Digunakan</th>
-										<th>Satuan</th>
+										<th>ID Pengajuan</th>
+										<th>Tanggal</th>
 										<th class="">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 
-									@foreach($dataBarang as $barang)
+									@foreach($daftarPengajuan as $pengajuan)
 									<tr>
-										<td>{{ $barang->id }}</td>
-										<td>{{ $barang->nama_barang }}</td>
-										<td>{{ $barang->total }}</td>
-										<td>{{ $barang->digunakan }}</td>
-										<td>{{ $barang->satuan }}</td>
+										<td>{{ $pengajuan->id }}</td>
+										<td>{{ indoDate($pengajuan->tanggal, 'd-m-Y H:i') }}</td>
 										<td style="width: 1%; white-space: nowrap">
-											<button class="btn btn-warning" onclick="show_modal({{ $barang->id }})">Edit</button>
-											<button class="btn btn-danger" onclick="delete_barang({{ $barang->id }})">Hapus</button>
+											<button class="btn btn-success" onclick="show_modal({{ $pengajuan->id }})">Detail</button>
+											<button class="btn btn-warning" onclick="location.href='{{ site_url('private/pengajuan_inventaris/edit/'.$pengajuan->id) }}'">Edit</button>
+											<button class="btn btn-danger" onclick="show_delete({{ $pengajuan->id }})">Hapus</button>
 										</td>
 									</tr>
 									@endforeach
@@ -57,7 +52,7 @@
 		</div>
 	</div>
 </main>
-@include('private.daftar_barang.modal_barang')
+@include('private.pengajuan_inventaris.modal_pengajuan')
 @endsection
 @section('js')
 <!-- JS Libraies -->
@@ -65,7 +60,7 @@
 <script>
 
 	
-	$("#table-barang").dataTable({
+	$("#table-inventaris").dataTable({
 		"order" : [],
 		"columnDefs": [
 		{ "sortable": false, "targets": [2] }

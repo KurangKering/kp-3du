@@ -12,41 +12,31 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Data Pengajuan Inventaris
-
-							
+						<div class="card-header">Daftar Pengajuan Inventaris
+							<div class="card-header-actions">
+								<button class="btn btn-primary" type="button" onclick="location.href='<?php echo e(site_url('private/pengajuan_inventaris/create')); ?>'">Tambah Pengajuan</button>
+							</div>
 						</div>
 						<div class="card-body">
-							<table class="table table-striped" id="table-ruangan">
+							<table class="table table-striped table-bordered" id="table-inventaris">
 								<thead>                                 
 									<tr>
 										
-										<th>Nama</th>
-										<th>No Identitas</th>
-										<th>Pekerjaan</th>
-										<th>Keperluan</th>
-										<th>Ruangan</th>
-										<th>Waktu</th>
-										<th>Tgl Peminjaman</th>
-										<th>Status</th>
+										<th>ID Pengajuan</th>
+										<th>Tanggal</th>
 										<th class="">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 
-									<?php $__currentLoopData = $dataPeminjaman; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $peminjaman): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+									<?php $__currentLoopData = $daftarPengajuan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $pengajuan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 									<tr>
-										<td><?php echo e($peminjaman->nama); ?></td>
-										<td><?php echo e($peminjaman->number_id); ?></td>
-										<td><?php echo e($peminjaman->pekerjaan); ?></td>
-										<td><?php echo e($peminjaman->keperluan->keperluan); ?></td>
-										<td><?php echo e($peminjaman->ruangan->nama); ?></td>
-										<td><?php echo e($peminjaman->waktu->mulai . ' - '. $peminjaman->waktu->selesai); ?></td>
-										<td><?php echo e($peminjaman->tgl_peminjaman); ?></td>
-										<td><?php echo e($peminjaman->status); ?></td>
-										<td>
-											<button class="btn btn-warning" onclick="show_modal(<?php echo e($peminjaman->id); ?>)">Edit</button>
-											<button class="btn btn-danger" onclick="delete_ruangan(<?php echo e($peminjaman->id); ?>)">Hapus</button>
+										<td><?php echo e($pengajuan->id); ?></td>
+										<td><?php echo e(indoDate($pengajuan->tanggal, 'd-m-Y H:i')); ?></td>
+										<td style="width: 1%; white-space: nowrap">
+											<button class="btn btn-success" onclick="show_modal(<?php echo e($pengajuan->id); ?>)">Detail</button>
+											<button class="btn btn-warning" onclick="location.href='<?php echo e(site_url('private/pengajuan_inventaris/edit/'.$pengajuan->id)); ?>'">Edit</button>
+											<button class="btn btn-danger" onclick="show_delete(<?php echo e($pengajuan->id); ?>)">Hapus</button>
 										</td>
 									</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -61,7 +51,7 @@
 		</div>
 	</div>
 </main>
-<?php echo $__env->make('private.ruangan.modal_ruangan', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('private.pengajuan_inventaris.modal_pengajuan', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>
 <!-- JS Libraies -->
@@ -69,7 +59,8 @@
 <script>
 
 	
-	$("#table-ruangan").dataTable({
+	$("#table-inventaris").dataTable({
+		"order" : [],
 		"columnDefs": [
 		{ "sortable": false, "targets": [2] }
 		]

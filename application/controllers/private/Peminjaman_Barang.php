@@ -26,9 +26,11 @@ class Peminjaman_Barang extends Private_Controller {
 	{
 		$peminjamanBarang = $this->M_peminjaman_barang->with('det_peminjaman_barang.daftar_barang')->findOrFail($id);
 		$tanggal = indoDate($peminjamanBarang->waktu_mulai, 'd-m-Y');
-		$waktuMulai = indoDate($peminjamanBarang->waktu_mulai, 'H:i');
-		$waktuSelesai = indoDate($peminjamanBarang->waktu_selesai, 'H:i');
-		$peminjamanBarang->tanggalWaktu = "$tanggal | $waktuMulai - $waktuSelesai";
+		$waktuMulai = indoDate($peminjamanBarang->waktu_mulai, 'd-m-Y H:i');
+		$waktuPengembalian = $peminjamanBarang->waktu_pengembalian ? indoDate($peminjamanBarang->waktu_pengembalian, 'd-m-Y H:i') : '-';
+
+		$peminjamanBarang->waktuMulai = $waktuMulai;
+		$peminjamanBarang->waktuPengembalian = "$waktuPengembalian";
 
 		$this->output
 		->set_content_type('application/json', 'utf-8')
@@ -40,37 +42,73 @@ class Peminjaman_Barang extends Private_Controller {
 
 	public function create()
 	{
-		$this->vars['daftarBarang'] = $this->M_daftar_barang->get();
+		$daftarBarang = $this->M_daftar_barang->get();
+		$daftarPeminjaman = $this->M_peminjaman_barang->with('det_peminjaman_barang')->get();
+
+		$daftarSedangDipinjam = $daftarPeminjaman->where('status', '1');
+
+
+		$daftarBarangDipinjam = collect();
+
+		$daftarBarang->each(function($mstBarang) use($daftarSedangDipinjam){
+			$jumlah = 0;
+			$daftarSedangDipinjam->each(function($daftarSedang) use($mstBarang, &$jumlah) {
+
+				$daftarSedang->det_peminjaman_barang
+				->where('daftar_barang_id', $mstBarang->id)
+				->first(function($i) use(&$jumlah){
+					$jumlah += $i->jumlah;
+				});
+
+
+			});
+
+			$mstBarang->sisa = $mstBarang->total - $jumlah;
+		});
+
+		$this->vars['daftarBarang'] = $daftarBarang;
+
 		return view('private.peminjaman_barang.create', $this->vars);
 	}
 	public function store()
 	{
+		$post = $this->input->post();
 		$response = $this->load->library('Response');
-		if ($this->input->post('val_id') == NULL) {
+		if ($post['val_id'] == NULL) {
 			$this->response->addError('Tidak Ada Barang yang di pilih', 'val_id');
 		}
-		foreach (($this->input->post('val_jumlah') ?? []) as $k => $jumlah) {
-			if (!preg_match('/^\d+$/', $jumlah) || $jumlah <= 0)
-				$this->response->addError('Value Hanya Berisi Angka !', "val_jumlah[$k]");
+		$valSisa = $post['val_sisa'];
+		$valJumlah = $post['val_jumlah'];
+		$valID = $post['val_id'];
+		foreach (($post['val_id'] ?? []) as $k => $id) {
+
+			if (!preg_match('/^\d+$/', $valJumlah[$k]) || $valJumlah[$k] <= 0)
+				$this->response->addError('Jumlah Hanya Berisi Angka !', "$k");
+
+			if ($valSisa[$k] < $valJumlah[$k])
+				$this->response->addError('Jumlah lebih besar dari sisa !', "$k");
+			
 		}
+
 		if ($this->response->isSuccess())
 		{
-			$post = $this->input->post();
 			$inTanggal = date("Y-m-d", strtotime($post['inputTanggal']));
 			$inWaktuMulai = date('Y-m-d H:i:s', strtotime($inTanggal . ' ' . $post['inputWaktuMulai']));
-			$inWaktuSelesai = date('Y-m-d H:i:s', strtotime($inTanggal . ' ' . $post['inputWaktuSelesai']));
+			// $inWaktuSelesai = date('Y-m-d H:i:s', strtotime($inTanggal . ' ' . $post['inputWaktuSelesai']));
 
 			$formPeminjaman = [
 				'nama' => $post['inputNama'],
 				'kegiatan' => $post['inputKegiatan'],
 				'waktu_mulai' => $inWaktuMulai,
-				'waktu_selesai' => $inWaktuSelesai,
+				'waktu_selesai' => NULL,
 				'status' => '1',
 			];
 			$insertPeminjaman = $this->M_peminjaman_barang->create($formPeminjaman);
 			if ($insertPeminjaman) {
 				$formDetailPeminjaman = [];
 				foreach ($post['val_id'] as $key => $barangID) {
+
+
 					$formDetailPeminjaman[] = [
 						'peminjaman_barang_id' => $insertPeminjaman->id,
 						'daftar_barang_id' => $post['val_id'][$key],
@@ -148,10 +186,15 @@ class Peminjaman_Barang extends Private_Controller {
          		'status' => $post['status'],
          	];
          	if ($post['status'] == '2') {
-         		if ($peminjaman->waktu_pengembalian === NULL) {
-         			$formPeminjaman['waktu_pengembalian'] = date("Y-m-d H:i:s");
-         		}
+         		$inTanggalPengembalian = date("Y-m-d", strtotime($post['inputTanggalPengembalian']));
+         		$inWaktuPengembalian = date('Y-m-d H:i:s', strtotime($inTanggalPengembalian . ' ' . $post['inputWaktuPengembalian']));
+         		$formPeminjaman['waktu_pengembalian'] = $inWaktuPengembalian;
+
+         	} else 
+         	{
+         		$peminjaman->waktu_pengembalian = NULL;
          	}
+
          	$updatePeminjaman = $peminjaman->update($formPeminjaman);
          }
 
@@ -169,6 +212,32 @@ class Peminjaman_Barang extends Private_Controller {
      {
      	$peminjaman = $this->M_peminjaman_barang->with('det_peminjaman_barang')->findOrFail($id);
 
+     	$daftarBarang = $this->M_daftar_barang->get();
+     	$daftarPeminjaman = $this->M_peminjaman_barang->with('det_peminjaman_barang')->get();
+
+     	$daftarSedangDipinjam = $daftarPeminjaman
+     	->where('status', '1')
+     	->where('id', '!=', $peminjaman->id);
+
+
+     	$daftarBarangDipinjam = collect();
+
+     	$daftarBarang->each(function($mstBarang) use($daftarSedangDipinjam){
+     		$jumlah = 0;
+     		$daftarSedangDipinjam->each(function($daftarSedang) use($mstBarang, &$jumlah) {
+
+     			$daftarSedang->det_peminjaman_barang
+     			->where('daftar_barang_id', $mstBarang->id)
+     			->first(function($i) use(&$jumlah){
+     				$jumlah += $i->jumlah;
+     			});
+
+
+     		});
+
+     		$mstBarang->sisa = $mstBarang->total - $jumlah;
+     	});
+
      	$requestedBarang = [];
      	foreach ($peminjaman->det_peminjaman_barang as $key => $detPeminjaman) {
      		$requestedBarang[$key]['det_peminjaman_barang_id'] = $detPeminjaman->id;
@@ -176,15 +245,23 @@ class Peminjaman_Barang extends Private_Controller {
      		$requestedBarang[$key]['nama'] = $detPeminjaman->daftar_barang->nama_barang;
      		$requestedBarang[$key]['satuan'] = $detPeminjaman->daftar_barang->satuan;
      		$requestedBarang[$key]['jumlah'] = $detPeminjaman->jumlah;
+     		$requestedBarang[$key]['sisa'] = $daftarBarang->where('id', $detPeminjaman->daftar_barang->id)->sum('sisa');
      	}
 
      	$peminjaman->tanggal = date('d-m-Y', strtotime($peminjaman->waktu_mulai));
      	$peminjaman->waktuMulai = date('H:i', strtotime($peminjaman->waktu_mulai));
      	$peminjaman->waktuSelesai = date('H:i', strtotime($peminjaman->waktu_selesai));
 
+     	$peminjaman->tanggalPengembalian = NULL;
+     	if ($peminjaman->status == '2') {
+     		$peminjaman->tanggalPengembalian = date('d-m-Y', strtotime($peminjaman->waktu_pengembalian));
+     		$peminjaman->waktuPengembalian = date('H:i', strtotime($peminjaman->waktu_pengembalian));
+     	}
+
+
      	$this->vars['peminjamanBarang'] = $peminjaman;
      	$this->vars['requestedBarang'] = $requestedBarang;
-     	$this->vars['daftarBarang'] = $this->M_daftar_barang->get();
+     	$this->vars['daftarBarang'] = $daftarBarang;
 
      	return view('private.peminjaman_barang.edit', $this->vars);
      }
@@ -195,6 +272,30 @@ class Peminjaman_Barang extends Private_Controller {
      	$update = $this->M_peminjaman_barang->findOrFail($post['id']);
      	$update->status = $post['status'];
      	$update->save();
+
+
+     	$response['status'] = 'success';
+     	$this->output
+     	->set_content_type('application/json', 'utf-8')
+     	->set_output(json_encode($response, JSON_HEX_APOS | JSON_HEX_QUOT))
+     	->_display();
+
+     	exit;
+     }
+
+
+     public function delete()
+     {
+     	$id = $this->input->post('id');
+
+     	$dataPeminjaman = $this->M_peminjaman_barang
+     	->with('det_peminjaman_barang')
+     	->findOrFail($id);
+
+     	$dataPeminjaman->det_peminjaman_barang->each(function($i) {
+     		$i->delete();
+     	});
+     	$dataPeminjaman->delete();
 
 
      	$response['status'] = 'success';

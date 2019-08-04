@@ -1,67 +1,55 @@
-  <div id="modal-detail" style="display: none;">
-    <form  id="frm-peminjaman">
-      <input type="hidden" name="id" value="">
-      <input type="hidden" name="type" value="get">
-      <div class="card">
-        <div class="card-body">
-         <div id="error-message">
-
-         </div>
-         <div class="form-group">
-          <label>Nama</label>
-          <input type="text" name="nama"  onkeydown="return false" id="nama" class="form-control">
-        </div>
-
-        <div class="form-group">
-          <label>Kegiatan</label>
-          <input type="text" name="kegiatan" onkeydown="return false" id="kegiatan" class="form-control">
-        </div>
-
-        <div class="form-group">
-          <label>Waktu Mulai</label>
-          <input type="text" name="waktu_mulai" onkeydown="return false"  id="waktu_mulai" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Waktu Pengembalian</label>
-          <input type="text" name="waktu_pengembalian" onkeydown="return false"  id="waktu_pengembalian" class="form-control">
-        </div>
-        
-      </div>
-      
+  
+<div id="modal-detail" style="display: none;">
+  <form  id="frm-peminjaman">
+    <input type="hidden" name="id" value="">
+    <input type="hidden" name="type" value="get">
+    <div class="card">
       <div class="card-body">
-        <table class="table table-striped table-bordered">
+       <div id="error-message">
 
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Nama Barang</th>
-              <th>Jumlah</th>
-            </tr>
-          </thead>
-          <tbody id="table-det-peminjaman-barang">
-
-          </tbody>
-        </table>
+       </div>
+       <div class="form-group">
+        <label>Tanggal</label>
+        <input type="text" name="tanggal"  onkeydown="return false" id="tanggal" class="form-control">
       </div>
-      <div class="card-footer submit-area">
-        <div class="row">
-          <div class="col-md-6">
-            <button class="btn btn-warning mr-1  btn-submit"  data-value="-1" type="button">Tolak</button>
-          </div>
-          <div class="col-md-6 text-right">
-            <button class="btn btn-primary mr-1 btn-submit"  data-value="2" type="button">Terima</button>
-          </div>
+
+
+    </div>
+
+    <div class="card-body">
+      <table class="table table-striped table-bordered">
+
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Inventaris</th>
+            <th>Jumlah</th>
+          </tr>
+        </thead>
+        <tbody id="table-det-pengajuan">
+
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer submit-area">
+      <div class="row">
+        <div class="col-md-6">
+          <button class="btn btn-warning mr-1  btn-submit"  data-value="-1" type="button">Tolak</button>
+        </div>
+        <div class="col-md-6 text-right">
+          <button class="btn btn-primary mr-1 btn-submit"  data-value="2" type="button">Terima</button>
         </div>
       </div>
     </div>
-  </form>
+  </div>
+</form>
 </div>
 
 
-
-@section('js')
-@parent
+<?php $__env->startSection('js'); ?>
+##parent-placeholder-93f8bb0eb2c659b85694486c41717eaf0fe23cd4##
 <script>
+  
   $("#modal-detail").iziModal({
     subtitle: '',
     zindex: 5000,
@@ -89,7 +77,7 @@
     if( id )
     {
       $.ajax({
-        url: SITE_URL + 'private/peminjaman_barang/info/'+id,
+        url: SITE_URL + 'private/pengajuan_inventaris/info/'+id,
         type: 'GET',
         dataType: 'json',
 
@@ -99,7 +87,7 @@
 
         $("button[type='submit']").text('Simpan');
 
-        $("#modal-detail").iziModal('setTitle', 'Detail Peminjaman Barang');
+        $("#modal-detail").iziModal('setTitle', 'Detail Pengajuan Inventaris');
 
         set_modal_data(data);
 
@@ -127,15 +115,11 @@
   {
 
     $("#error-message").html("");
-    $("input[name='id']").val(data.id);
-    $("input[name='nama']").val(data.nama);
-    $("input[name='kegiatan']").val(data.kegiatan);
-    $("input[name='waktu_mulai']").val(data.waktuMulai);
-    $("input[name='waktu_pengembalian']").val(data.waktuPengembalian);
-    var el = $("#table-det-peminjaman-barang");
+    $("input[name='tanggal']").val(data.tanggal);
+    var el = $("#table-det-pengajuan");
     el.empty();
     var noPage = 1;
-    $.each(data.det_peminjaman_barang.reverse(), function(index, val) {
+    $.each(data.det_pengajuan_inventaris.reverse(), function(index, val) {
 
       var tr = $("<tr/>");
       tr.append($("<td/>", {
@@ -144,11 +128,11 @@
         style   : "vertical-align:middle;",
       }))
       .append($("<td/>", {
-        text  : val.daftar_barang.nama_barang,
+        text  : val.daftar_inventaris.nama,
         style   : "vertical-align:middle;",
       }))
       .append($("<td/>", {
-        text  : val.jumlah + ' ' +  val.daftar_barang.satuan,
+        text  : val.jumlah + ' ' +  val.daftar_inventaris.satuan,
         style   : "vertical-align:middle;",
         class : 'text-center'
       }))
@@ -251,7 +235,7 @@
     }).then((result) => {
       if (result.value) {
        $.ajax({
-        url: SITE_URL + 'private/peminjaman_barang/delete/',
+        url: SITE_URL + 'private/pengajuan_inventaris/delete/',
         type: 'POST',
         data: {id : id},
         dataType: 'json',
@@ -277,5 +261,6 @@
 
    })
   }
+
 </script>
-@endsection
+<?php $__env->stopSection(); ?><?php /**PATH D:\xZeroxSugarx\xampp\htdocs\kp-edu\application\views/private/pengajuan_inventaris/modal_pengajuan.blade.php ENDPATH**/ ?>

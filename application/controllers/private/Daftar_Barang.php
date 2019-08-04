@@ -12,6 +12,27 @@ class Daftar_Barang extends Private_Controller {
 	{
 		$dataBarang = $this->M_daftar_barang->latest()->get();
 
+		$daftarSedangDipinjam = $this->M_peminjaman_barang->where('status', '1')->get();
+
+		$daftarBarangDipinjam = collect();
+
+		$dataBarang->each(function($mstBarang) use($daftarSedangDipinjam){
+			$jumlah = 0;
+			$daftarSedangDipinjam->each(function($daftarSedang) use($mstBarang, &$jumlah) {
+
+				$daftarSedang->det_peminjaman_barang
+				->where('daftar_barang_id', $mstBarang->id)
+				->first(function($i) use(&$jumlah){
+					$jumlah += $i->jumlah;
+				});
+
+
+			});
+
+			$mstBarang->digunakan = $jumlah;
+		});
+
+
 		$this->vars['dataBarang'] = $dataBarang;
 
 		return view('private.daftar_barang.index', $this->vars);
@@ -21,6 +42,31 @@ class Daftar_Barang extends Private_Controller {
 	public function info($id)
 	{
 		$barang = $this->M_daftar_barang->findOrFail($id);
+
+		$daftarSedangDipinjam = $this->M_peminjaman_barang
+		->with(['det_peminjaman_barang' => function($j) {
+
+		}])
+		->whereHas('det_peminjaman_barang', function($i) use($barang) {
+			$i->where('daftar_barang_id', $barang->id);
+		})
+		->where('status', '1')
+		->get();
+
+		$jumlah = 0;
+		$daftarSedangDipinjam->each(function($daftarSedang) use($barang, &$jumlah) {
+
+			$daftarSedang->det_peminjaman_barang
+			->where('daftar_barang_id', $barang->id)
+			->first(function($i) use(&$jumlah){
+				$jumlah += $i->jumlah;
+			});
+
+
+		});
+
+		$barang->digunakan = $jumlah;
+
 		$this->output
 		->set_content_type('application/json', 'utf-8')
 		->set_output(json_encode($barang, JSON_HEX_APOS | JSON_HEX_QUOT))
@@ -31,8 +77,9 @@ class Daftar_Barang extends Private_Controller {
 
 	public function store() 
 	{	
-		$this->form_validation->set_rules('nama_barang', 'Nama', 'trim|required');
+		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
 		$this->form_validation->set_rules('satuan', 'Satuan', 'trim|required');
+		$this->form_validation->set_rules('total', 'Total', 'trim|required');
 		if ($this->form_validation->run() === FALSE) {
 			$this->vars['status'] = 'error';
 			$this->vars['messages'] = validation_errors();
@@ -43,9 +90,10 @@ class Daftar_Barang extends Private_Controller {
 			$input = [
 				'nama_barang' => $form_data['nama_barang'],
 				'satuan' => $form_data['satuan'],
+				'total' => $form_data['total'],
 			];
-			$new_ruangan = $this->M_daftar_barang->create($input);
-			if ($new_ruangan) {
+			$newBarang = $this->M_daftar_barang->create($input);
+			if ($newBarang) {
 				$this->vars['status'] = 'success';
 			}
 		}
@@ -60,8 +108,10 @@ class Daftar_Barang extends Private_Controller {
 	}
 	public function update()
 	{
-		$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+		$this->form_validation->set_rules('nama_barang', 'Nama Barang', 'trim|required');
 		$this->form_validation->set_rules('satuan', 'Satuan', 'trim|required');
+		$this->form_validation->set_rules('total', 'Total', 'trim|required');
+
 		if ($this->form_validation->run() === FALSE) {
 			$this->vars['status'] = 'error';
 			$this->vars['messages'] = validation_errors();
@@ -71,8 +121,9 @@ class Daftar_Barang extends Private_Controller {
 			$input = [
 				'nama' => $form_data['nama'],
 				'satuan' => $form_data['satuan'],
+				'total' => $form_data['total'],
 			];
-		
+
 
 			$update_ruangan = $this->M_daftar_barang->findOrFail($form_data['id'])->update($input);
 			if ($update_ruangan) {

@@ -40,30 +40,8 @@
 										<td>{{ $lembar->tanggal }}</td>
 
 										<td style="width: 1%; white-space: nowrap">
-											@php
-											$statDis = '';
-											if ($lembar->status == '1') {
-												$statDis = 
-												'
-												<button onclick="show_disposisi('.$lembar->id.')" class="btn btn-sm btn-block btn-warning" type="button">
-												<span>
-												<i class="icon-reload icons font-2xl d-block"></i>
-												</span>
-												</button>
-												';
-											}
-											else if ($lembar->status == '2') {
-												$statDis = 
-												'
-												<button onclick="show_disposisi('.$lembar->id.')" class="btn btn-sm btn-block btn-success" type="button">
-												<span>
-												<i class="icon-check icons font-2xl d-block"></i>
-												</span>
-												</button>
-												';
-											}
-											@endphp
-											{!! $statDis !!}
+											
+										{{ hStatusDisposisi($lembar->status) }}
 											
 										</td>
 										
@@ -89,7 +67,7 @@
 		</div>
 	</div>
 </main>
-@include('private.peminjaman_ruangan.modal_create_lembar_disposisi')
+@include('private.lembar_disposisi.modal_isi_disposisi')
 
 @endsection
 @section('js')

@@ -8,6 +8,7 @@ class M_det_peminjaman_barang extends Eloquent
 		'peminjaman_barang_id',
 		'daftar_barang_id',
 		'jumlah',
+		'status'
 	];
 
 

@@ -18,8 +18,12 @@
         </div>
 
         <div class="form-group">
-          <label>Waktu</label>
-          <input type="text" name="waktu" onkeydown="return false"  id="waktu" class="form-control">
+          <label>Waktu Mulai</label>
+          <input type="text" name="waktu_mulai" onkeydown="return false"  id="waktu_mulai" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Waktu Pengembalian</label>
+          <input type="text" name="waktu_pengembalian" onkeydown="return false"  id="waktu_pengembalian" class="form-control">
         </div>
         
       </div>
@@ -95,7 +99,7 @@
 
         $("button[type='submit']").text('Simpan');
 
-        $("#modal-detail").iziModal('setTitle', 'Form Peminjaman Barang');
+        $("#modal-detail").iziModal('setTitle', 'Detail Peminjaman Barang');
 
         set_modal_data(data);
 
@@ -126,7 +130,8 @@
     $("input[name='id']").val(data.id);
     $("input[name='nama']").val(data.nama);
     $("input[name='kegiatan']").val(data.kegiatan);
-    $("input[name='waktu']").val(data.tanggalWaktu);
+    $("input[name='waktu_mulai']").val(data.waktuMulai);
+    $("input[name='waktu_pengembalian']").val(data.waktuPengembalian);
     var el = $("#table-det-peminjaman-barang");
     el.empty();
     var noPage = 1;
@@ -231,6 +236,46 @@
     $("input[name='nama']").val("");
     $('.input-data').attr('disabled', false);
 
+  }
+
+  var show_delete = function(id) 
+  {
+    Swal.fire({
+      title: 'Hapus ?',
+      text: "Yakin ingin menghapus Data ini ?",
+      type: 'warning',
+      showCancelButton: true,
+      cancelButtonColor: '#3085d6',
+      confirmButtonColor: '#d33',
+      confirmButtonText: 'Ya, Hapus!'
+    }).then((result) => {
+      if (result.value) {
+       $.ajax({
+        url: SITE_URL + 'private/peminjaman_barang/delete/',
+        type: 'POST',
+        data: {id : id},
+        dataType: 'json',
+
+      })
+       .done(function(data) {
+      
+        swalInfo('Berhasil', 'success','','2000')
+        .then((res) => {
+
+          location.reload();
+        })
+
+      })
+       .fail(function() {
+        console.log("error retrieve");
+      })
+       .always(function() {
+        console.log("complete retrieve");
+      });
+     }
+
+
+   })
   }
 </script>
 <?php $__env->stopSection(); ?><?php /**PATH D:\xZeroxSugarx\xampp\htdocs\kp-edu\application\views/private/peminjaman_barang/modal_detail.blade.php ENDPATH**/ ?>

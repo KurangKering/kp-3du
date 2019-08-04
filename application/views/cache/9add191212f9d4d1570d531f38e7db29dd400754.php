@@ -1,9 +1,9 @@
- @extends('layouts.backend')
- @section('css')
+ 
+ <?php $__env->startSection('css'); ?>
 
 
- @endsection
- @section('content')
+ <?php $__env->stopSection(); ?>
+ <?php $__env->startSection('content'); ?>
  <main class="main">
  	<!-- Breadcrumb-->
  	<ol class="breadcrumb"></ol>
@@ -14,66 +14,20 @@
  				<div class="row">
  					<div class="col-md-6">
  						<div class="card">
- 							<div class="card-header">Form Peminjaman Barang
+ 							<div class="card-header">Form Permintaan Inventaris
  							</div>
  							<div class="card-body">
  								<div id="error-message">
 
  								</div>
 
- 								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="inputNama">Nama </label>
- 									<div class="col-md-8">
-
- 										<div class="input-group-date">
- 											<input required  class="form-control date" id="" type="text" name="inputNama" value="" >
-
- 										</div>
-
- 									</div>
- 								</div>
- 								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="inputKegiatan">Kegiatan </label>
- 									<div class="col-md-8">
-
- 										<div class="input-group-date">
- 											<textarea required  class="form-control" id="inputKegiatan" type="text" name="inputKegiatan"></textarea>
-
- 										</div>
-
-
- 									</div>
- 								</div>
- 								<div class="form-group row" id="data_1">
- 									<label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Peminjaman </label>
- 									<div class="col-md-5">
- 										<div class="input-group-date">
- 											<input required onkeydown="return false" class="form-control date" id="inputTanggal" type="text" name="inputTanggal" value="{{ date('d-m-Y') }}" >
-
- 										</div>
-
- 									</div>
- 									<div class="col-md-3">
- 										<div class="input-group clockpicker" id="waktu-mulai">
- 											<input required onkeydown="return false"  type="text" name="inputWaktuMulai" id="inputWaktuMulai" class="form-control" value="{{ date("H:i") }}">
-
- 										</div>
-
- 									</div>
- 								</div>
+ 								<div class="form-group row"></div>
  								
  								
  								
- 								{{-- <div class="form-group row" id="data_3">
- 									<label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Selesai </label>
- 									<div class="col-md-8">
- 										<div class="input-group clockpicker" id="waktu-selesai">
- 											<input required onkeydown="return false"  type="text" name="inputWaktuSelesai" id="inputWaktuSelesai" class="form-control" value="">
-
- 										</div>
-
- 									</div>
- 								</div> --}}
+ 								
+ 								
+ 								
 
  								
 
@@ -82,7 +36,7 @@
  						</div>
  					</div><div class="col-md-6">
  						<div class="card">
- 							<div class="card-header">Daftar Barang Tersedia
+ 							<div class="card-header">Form Inventaris
  							</div>
  							<div class="card-body">
  								<div id="error-message">
@@ -90,15 +44,15 @@
  								</div>
 
  								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="addNamaBarang">Nama Barang</label>
+ 									<label class="col-md-4 col-form-label" for="addNamaInventaris">Nama Inventaris</label>
  									<div class="col-md-8">
 
  										<div class="input-group-date">
- 											<select name="addNamaBarang" id="addNamaBarang" class="form-control">
+ 											<select name="addNamaInventaris" id="addNamaInventaris" class="form-control">
  												<option value="">--silahkan pilih--</option>
- 												@foreach ($daftarBarang as $barang)
- 												<option data-satuan="{{ $barang->satuan }}" data-sisa="{{ $barang->sisa }}" value="{{ $barang->id }}">{{ $barang->nama_barang }}</option>
- 												@endforeach
+ 												<?php $__currentLoopData = $daftarInventaris; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $inventaris): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+ 												<option data-satuan="<?php echo e($inventaris->satuan); ?>" data-stock="<?php echo e($inventaris->stock); ?>" value="<?php echo e($inventaris->id); ?>"><?php echo e($inventaris->nama); ?></option>
+ 												<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
  											</select>
 
  										</div>
@@ -106,11 +60,11 @@
  									</div>
  								</div>
  								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="sisaTersedia">Total Tersedia</label>
+ 									<label class="col-md-4 col-form-label" for="stockTersedia">Stock Tersedia</label>
  									<div class="col-md-8">
 
  										<div class="input-group-date">
- 											<input   class="form-control date" id="sisaTersedia" type="text" name="sisaTersedia" value="" readonly>
+ 											<input   class="form-control date" id="stockTersedia" type="text" name="stockTersedia" value="" readonly>
 
  										</div>
 
@@ -118,7 +72,7 @@
  								</div>
  								
  								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="addJumlah">Jumlah Pinjam</label>
+ 									<label class="col-md-4 col-form-label" for="addJumlah">Jumlah Permintaan</label>
  									<div class="col-md-8">
 
  										<div class="input-group-date">
@@ -129,6 +83,8 @@
  									</div>
  								</div>
 
+ 								
+
 
 
 
@@ -136,7 +92,7 @@
 
  								<div class="card-footer text-right">
 
- 									<button class="btn btn-primary" id="btnAddBarang" type="button">Tambah Barang</button>
+ 									<button class="btn btn-primary" id="btnAddInventaris" type="button">Tambah Barang</button>
  								</div>
 
 
@@ -147,21 +103,21 @@
 
 
  						<div class="card">
- 							<div class="card-header">Daftar Peminjaman Barang
+ 							<div class="card-header">Daftar Inventaris 
  							</div>
  							<div class="card-body">
  								<table class="table table-striped table-bordered">
  									<thead>
  										<tr>
  											<th>No</th>
- 											<th>Nama Barang</th>
- 											<th>Sisa</th>
+ 											<th>Nama Inventaris</th>
+ 											<th>Stock</th>
  											<th>Jumlah</th>
  											<th>Satuan</th>
  											<th>Action</th>
  										</tr>
  									</thead>
- 									<tbody id="tbody-daftar-peminjaman"></tbody>
+ 									<tbody id="tbody-daftar-permintaan"></tbody>
  								</table>
  							</div>
  						</div>
@@ -177,56 +133,50 @@
  	</div>
  </main>
 
- @endsection
- @section('js')
+ <?php $__env->stopSection(); ?>
+ <?php $__env->startSection('js'); ?>
  <!-- JS Libraies -->
 
  <script>
- 	let $btnAdd  = $("#btnAddBarang");
+ 	let $btnAdd  = $("#btnAddInventaris");
  	let $addJumlah = $("#addJumlah");
- 	let $addNamaBarang = $("#addNamaBarang");
+ 	let $addNamaInventaris = $("#addNamaInventaris");
 
 
- 	const a = generateBarang({
-
- 		addFromClick: function(e)
+ 	const a = genPermintaanInventaris( {
+ 		addFromClick : function()
  		{
-
  			a.dom.$select.focus();
  			let id = a.dom.$select.val();
  			let nama = a.dom.$select.find(':selected').text();
- 			let satuan = a.dom.$select.find(':selected').data('satuan');
- 			let sisaTersedia = a.dom.$select.find(':selected').data('sisa');
  			let jumlah = a.dom.$inputJumlah.val();
+ 			let satuan = a.dom.$select.find(':selected').data('satuan');
+ 			let stockTersedia = a.dom.$select.find(':selected').data('stock');
 
- 			if (sisaTersedia < jumlah || sisaTersedia == 0) {
+ 			if (stockTersedia < jumlah || stockTersedia == 0) {
  				a.dom.$inputJumlah.val('');
- 				return;
+ 				return; 
  			}
-
-
-
  			let obj = {
  				id : id,
  				nama : nama,
  				jumlah : jumlah,
  				satuan : satuan,
- 				sisa : sisaTersedia,
+ 				stock : stockTersedia,
+
  			};
  			if (a.validasiBarang(obj)) {
- 				console.log(obj);
  				a.data.push(obj);
  				a.populateTable();
  			}
-
  		},
- 		submitData : function(e)
+ 		submitData : function(e) 
  		{
  			e.preventDefault();
 
  			a.dom.$btnSubmit.attr('disabled', true);
  			var formData = a.dom.$form.serializeArray();
- 			var URL = SITE_URL + 'private/peminjaman_barang/store';
+ 			var URL = SITE_URL + 'private/permintaan_inventaris/store';
  			$.ajax({
  				url: URL,
  				type: 'POST',
@@ -239,12 +189,12 @@
  				{
  					swalInfo('Berhasil', 'success', 'Berhasil Menambah Data', 2000)
  					.then(r => {
- 						location.href = SITE_URL + 'private/peminjaman_barang';
+ 						location.href = SITE_URL + 'private/permintaan_inventaris';
  					})
  				}
  				else 
  				{
- 				
+
  					swalInfo('Gagal', 'warning', 'Periksa Input Data', 2000)
 
  				}
@@ -256,22 +206,21 @@
  				a.dom.$btnSubmit.attr('disabled', false);
 
  			});
- 			
- 		}
 
+ 		}
  	});
  	
  	
 
 
- 	$addNamaBarang.change(function() {
+ 	$addNamaInventaris.change(function() {
  		var optionSelected =  $("option:selected", this);
  		var idBarang = optionSelected.val();
- 		var satuan = optionSelected.data('satuan')  || '';
- 		var sisa = optionSelected.data('sisa') || '';
+ 		var satuan = optionSelected.data('satuan') || '';
+ 		var stock = optionSelected.data('stock') || ''	;
 
- 		var $sisaTersedia = $("#sisaTersedia");
- 		$sisaTersedia.val(sisa + ' ' + satuan);
+ 		var $stockTersedia = $("#stockTersedia");
+ 		$stockTersedia.val(stock + ' ' + satuan);
  	})
 
 
@@ -317,4 +266,5 @@
  </script>
 
 
- @endsection
+ <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.backend', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xZeroxSugarx\xampp\htdocs\kp-edu\application\views/private/permintaan_inventaris/create.blade.php ENDPATH**/ ?>

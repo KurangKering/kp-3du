@@ -6,7 +6,8 @@ class M_daftar_barang extends Eloquent
 	protected $table = 'daftar_barang';
 	protected $fillable = [
 		'nama_barang',
-		'satuan'
+		'satuan',
+		'total'
 	];
 
 	public function det_peminjaman_barang()

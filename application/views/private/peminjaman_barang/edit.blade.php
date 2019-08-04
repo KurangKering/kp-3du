@@ -46,28 +46,24 @@
  									</div>
  								</div>
  								<div class="form-group row" id="data_1">
- 									<label class="col-md-4 col-form-label" for="detWaktuMulai">Tanggal </label>
- 									<div class="col-md-8">
+ 									<label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Peminjaman </label>
+ 									<div class="col-md-5">
  										<div class="input-group-date">
  											<input required onkeydown="return false" class="form-control date" id="inputTanggal" type="text" name="inputTanggal" value="{{ $peminjamanBarang->tanggal }}" >
-
  										</div>
-
  									</div>
- 								</div>
- 								
- 								
- 								<div class="form-group row" id="data_2">
- 									<label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Mulai </label>
- 									<div class="col-md-8">
+ 									<div class="col-md-3">
  										<div class="input-group clockpicker" id="waktu-mulai">
  											<input required onkeydown="return false"  type="text" name="inputWaktuMulai" id="inputWaktuMulai" class="form-control" value="{{ $peminjamanBarang->waktuMulai }}">
 
  										</div>
 
  									</div>
+
  								</div>
- 								<div class="form-group row" id="data_3">
+
+
+ 								{{-- <div class="form-group row" id="data_3">
  									<label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Selesai </label>
  									<div class="col-md-8">
  										<div class="input-group clockpicker" id="waktu-selesai">
@@ -76,7 +72,7 @@
  										</div>
 
  									</div>
- 								</div>
+ 								</div> --}}
  								<div class="form-group row" >
  									<label class="col-md-4 col-form-label" for="detWaktuMulai">Status Peminjaman </label>
  									<div class="col-md-8">
@@ -86,6 +82,25 @@
  												<option {{ $statKey == $peminjamanBarang->status ? 'selected' : '' }} value="{{ $statKey }}">{{ $status }}</option>
  												@endforeach
  											</select>
+ 										</div>
+
+ 									</div>
+ 								</div>
+
+ 								<div id="areaPengembalian" style="display: none;">
+ 									<div class="form-group row">
+ 										<label class="col-md-4 col-form-label">Waktu Pengembalian </label>
+ 										<div class="col-md-5">
+ 											<div class="input-group-date">
+ 												<input  onkeydown="return false" class="form-control date" id="inputTanggalPengembalian" type="text" name="inputTanggalPengembalian" value="{{ $peminjamanBarang->tanggalPengembalian }}" >
+ 											</div>
+ 										</div>
+ 										<div class="col-md-3">
+ 											<div class="input-group clockpicker" id="waktu-mulai">
+ 												<input  onkeydown="return false"  type="text" name="inputWaktuPengembalian" id="inputWaktuPengembalian" class="form-control clock-time" value="{{ $peminjamanBarang->waktuPengembalian }}">
+
+ 											</div>
+
  										</div>
 
  									</div>
@@ -113,7 +128,7 @@
  											<select name="addNamaBarang" id="addNamaBarang" class="form-control">
  												<option value="">--silahkan pilih--</option>
  												@foreach ($daftarBarang as $barang)
- 												<option data-satuan="{{ $barang->satuan }}" value="{{ $barang->id }}">{{ $barang->nama_barang }}</option>
+ 												<option data-satuan="{{ $barang->satuan }}" data-sisa="{{ $barang->sisa }}" value="{{ $barang->id }}">{{ $barang->nama_barang }}</option>
  												@endforeach
  											</select>
 
@@ -122,18 +137,19 @@
  									</div>
  								</div>
  								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="addSatuan">Satuan</label>
+ 									<label class="col-md-4 col-form-label" for="sisaTersedia">Total Tersedia</label>
  									<div class="col-md-8">
 
  										<div class="input-group-date">
- 											<input required  class="form-control date" id="addSatuan" type="text" name="addSatuan" readonly >
+ 											<input   class="form-control date" id="sisaTersedia" type="text" name="sisaTersedia" value="" readonly>
 
  										</div>
 
  									</div>
  								</div>
+ 								
  								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="addJumlah">Jumlah</label>
+ 									<label class="col-md-4 col-form-label" for="addJumlah">Jumlah Pinjam</label>
  									<div class="col-md-8">
 
  										<div class="input-group-date">
@@ -165,13 +181,14 @@
  							<div class="card-header">Daftar Peminjaman Barang
  							</div>
  							<div class="card-body">
- 								<table class="table table-striped">
+ 								<table class="table table-striped table-bordered">
  									<thead>
  										<tr>
  											<th>No</th>
  											<th>Nama Barang</th>
- 											<th>Satuan</th>
+ 											<th>Sisa</th>
  											<th>Jumlah</th>
+ 											<th>Satuan</th>
  											<th>Action</th>
  										</tr>
  									</thead>
@@ -182,7 +199,7 @@
  					</div>
  					<div class="col-md-12">
  						<div class="card-footer">
- 							<button type="submit" id="btn-submit" class="btn btn-block btn-lg btn-success">SIMPAN</button>
+ 							<button type="submit" id="btn-submit" class="btn btn-block btn-lg btn-primary">SIMPAN</button>
  						</div>
  					</div>
  				</div>
@@ -204,6 +221,36 @@
 
  	const a = generateBarang({
  		data : arr_barang,
+ 		addFromClick: function(e)
+ 		{
+
+ 			a.dom.$select.focus();
+ 			let id = a.dom.$select.val();
+ 			let nama = a.dom.$select.find(':selected').text();
+ 			let satuan = a.dom.$select.find(':selected').data('satuan');
+ 			let sisaTersedia = a.dom.$select.find(':selected').data('sisa');
+ 			let jumlah = a.dom.$inputJumlah.val();
+
+ 			if (sisaTersedia < jumlah || sisaTersedia == 0) {
+ 				a.dom.$inputJumlah.val('');
+ 				return;
+ 			}
+
+
+
+ 			let obj = {
+ 				id : id,
+ 				nama : nama,
+ 				jumlah : jumlah,
+ 				satuan : satuan,
+ 				sisa : sisaTersedia,
+ 			};
+ 			if (a.validasiBarang(obj)) {
+ 				a.data.push(obj);
+ 				a.populateTable();
+ 			}
+
+ 		},
  		submitData : function(e)
  		{
  			e.preventDefault();
@@ -248,18 +295,54 @@
  	let $btnAdd  = $("#btnAddBarang");
  	let $addJumlah = $("#addJumlah");
  	let $addNamaBarang = $("#addNamaBarang");
+ 	let $status = $("#status");
+ 	let $areaPengembalian = $("#areaPengembalian");
 
 
+ 	var valStatus = $status.val();
 
+ 	if (valStatus == '2') {
+ 		$areaPengembalian.show();
+ 	} else {
+ 		$areaPengembalian.hide();
+ 	}
+ 	
 
- 	let tanggalDate = $('#data_1 .date').datepicker({
+ 	$addNamaBarang.change(function() {
+ 		var optionSelected =  $("option:selected", this);
+ 		var idBarang = optionSelected.val();
+ 		var satuan = optionSelected.data('satuan');
+ 		var sisa = optionSelected.data('sisa');
+
+ 		var $sisaTersedia = $("#sisaTersedia");
+ 		$sisaTersedia.val(sisa + ' ' + satuan);
+ 	})
+
+ 	$status.change(function() {
+ 		var optionSelected =  $("option:selected", this);
+ 		var valStatus = optionSelected.val();
+
+ 		if (valStatus == '2') {
+ 			$("#inputTanggalPengembalian").val("{{ date('d-m-Y') }}");
+ 			$("#inputWaktuPengembalian").val("{{ date('H:i') }}");
+ 			$areaPengembalian.show();
+ 		} else {
+ 			$areaPengembalian.hide();
+ 		}
+
+ 	})
+
+ 	let tanggalDate = $('.date').datepicker({
+ 		todayBtn : true,
  		keyboardNavigation: false,
  		forceParse: false,
  		calendarWeeks: true,
  		autoclose: true,
  		format: "dd-mm-yyyy",
  	});
- 	let varWaktuMulai =  $('#waktu-mulai').clockpicker({
+
+ 	
+ 	let varTime =  $('.clock-time').clockpicker({
  		autoclose: true,
  		placement: 'top',
  		afterDone : function() {

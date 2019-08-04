@@ -48,47 +48,11 @@
 									?>
 									<tr>
 										<td><?php echo e($peminjaman->nama); ?></td>
-										<td><?php echo e($peminjaman->kegiatan->nama_kegiatan); ?></td>
+										<td><?php echo e($peminjaman->kegiatan); ?></td>
 										<td><?php echo e($peminjaman->ruangan->nama); ?></td>
 										<td style="white-space: nowrap; width: 1%;"><?php echo e($peminjaman->tanggal); ?></td>
 										<td style="text-align: center; width: 1%; white-space: nowrap">
-											<?php $stat = ''; 
-											if ($peminjaman->status == '2') {
-
-												$stat = '
-												<button class="btn btn-md btn-block btn-success" type="button">
-												<span class="">
-												<i class="icon-check icons font-2xl d-block"></i>
-												</span>
-												</button>
-												';
-											} else if($peminjaman->status == '-1')
-											{
-
-												$stat = 
-												'
-												<button  class="btn btn-md btn-block btn-danger" type="button">
-												<span>
-												<i class="icon-ban icons font-2xl d-block"></i>
-												</span>
-												</button>
-												';
-											} else 
-											{
-
-												$stat = 
-												'
-												<button  class="btn btn-md btn-block btn-warning" type="button">
-												<span>
-												<i class="icon-reload icons font-2xl d-block"></i>
-												</span>
-												</button>
-												';
-											}
-
-											?>
-											
-											<?php echo $stat; ?>
+											<?php echo e(hStatusPeminjaman($peminjaman->status)); ?>
 
 										</td>
 										<td style="width: 1%; white-space: nowrap">

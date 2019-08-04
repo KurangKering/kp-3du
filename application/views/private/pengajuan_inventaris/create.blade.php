@@ -14,90 +14,23 @@
  				<div class="row">
  					<div class="col-md-6">
  						<div class="card">
- 							<div class="card-header">Form Peminjaman Barang
+ 							<div class="card-header">Form Pengajuan Inventaris
  							</div>
  							<div class="card-body">
+ 								
  								<div id="error-message">
 
  								</div>
 
  								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="inputNama">Nama </label>
+ 									<label class="col-md-4 col-form-label" for="addNamaInventaris">Nama Inventaris</label>
  									<div class="col-md-8">
 
  										<div class="input-group-date">
- 											<input required  class="form-control date" id="" type="text" name="inputNama" value="" >
-
- 										</div>
-
- 									</div>
- 								</div>
- 								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="inputKegiatan">Kegiatan </label>
- 									<div class="col-md-8">
-
- 										<div class="input-group-date">
- 											<textarea required  class="form-control" id="inputKegiatan" type="text" name="inputKegiatan"></textarea>
-
- 										</div>
-
-
- 									</div>
- 								</div>
- 								<div class="form-group row" id="data_1">
- 									<label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Peminjaman </label>
- 									<div class="col-md-5">
- 										<div class="input-group-date">
- 											<input required onkeydown="return false" class="form-control date" id="inputTanggal" type="text" name="inputTanggal" value="{{ date('d-m-Y') }}" >
-
- 										</div>
-
- 									</div>
- 									<div class="col-md-3">
- 										<div class="input-group clockpicker" id="waktu-mulai">
- 											<input required onkeydown="return false"  type="text" name="inputWaktuMulai" id="inputWaktuMulai" class="form-control" value="{{ date("H:i") }}">
-
- 										</div>
-
- 									</div>
- 								</div>
- 								
- 								
- 								
- 								{{-- <div class="form-group row" id="data_3">
- 									<label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Selesai </label>
- 									<div class="col-md-8">
- 										<div class="input-group clockpicker" id="waktu-selesai">
- 											<input required onkeydown="return false"  type="text" name="inputWaktuSelesai" id="inputWaktuSelesai" class="form-control" value="">
-
- 										</div>
-
- 									</div>
- 								</div> --}}
-
- 								
-
-
- 							</div>
- 						</div>
- 					</div><div class="col-md-6">
- 						<div class="card">
- 							<div class="card-header">Daftar Barang Tersedia
- 							</div>
- 							<div class="card-body">
- 								<div id="error-message">
-
- 								</div>
-
- 								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="addNamaBarang">Nama Barang</label>
- 									<div class="col-md-8">
-
- 										<div class="input-group-date">
- 											<select name="addNamaBarang" id="addNamaBarang" class="form-control">
+ 											<select name="addNamaInventaris" id="addNamaInventaris" class="form-control">
  												<option value="">--silahkan pilih--</option>
- 												@foreach ($daftarBarang as $barang)
- 												<option data-satuan="{{ $barang->satuan }}" data-sisa="{{ $barang->sisa }}" value="{{ $barang->id }}">{{ $barang->nama_barang }}</option>
+ 												@foreach ($daftarInventaris as $inventaris)
+ 												<option data-satuan="{{ $inventaris->satuan }}"  value="{{ $inventaris->id }}">{{ $inventaris->nama }}</option>
  												@endforeach
  											</select>
 
@@ -105,24 +38,25 @@
 
  									</div>
  								</div>
+ 								
  								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="sisaTersedia">Total Tersedia</label>
+ 									<label class="col-md-4 col-form-label" for="addJumlah">Jumlah</label>
  									<div class="col-md-8">
 
  										<div class="input-group-date">
- 											<input   class="form-control date" id="sisaTersedia" type="text" name="sisaTersedia" value="" readonly>
+ 											<input   class="form-control date" id="addJumlah" type="number" name="addJumlah" value="" >
 
  										</div>
 
  									</div>
  								</div>
- 								
+
  								<div class="form-group row">
- 									<label class="col-md-4 col-form-label" for="addJumlah">Jumlah Pinjam</label>
+ 									<label class="col-md-4 col-form-label" for="">Satuan</label>
  									<div class="col-md-8">
 
  										<div class="input-group-date">
- 											<input   class="form-control date" id="addJumlah" type="number" name="addJumlah" value="" >
+ 											<input   class="form-control date" id="satuan" type="text" name="" value="" readonly>
 
  										</div>
 
@@ -136,29 +70,35 @@
 
  								<div class="card-footer text-right">
 
- 									<button class="btn btn-primary" id="btnAddBarang" type="button">Tambah Barang</button>
+ 									<button class="btn btn-primary" id="btnAddInventaris" type="button">Tambah Inventaris</button>
  								</div>
+
+
+
+ 								
+
+ 								
 
 
  							</div>
  						</div>
  					</div>
- 					<div class="col-md-12">
+
+ 					<div class="col-md-6">
 
 
  						<div class="card">
- 							<div class="card-header">Daftar Peminjaman Barang
+ 							<div class="card-header">Daftar Inventaris
  							</div>
  							<div class="card-body">
  								<table class="table table-striped table-bordered">
  									<thead>
  										<tr>
- 											<th>No</th>
- 											<th>Nama Barang</th>
- 											<th>Sisa</th>
- 											<th>Jumlah</th>
- 											<th>Satuan</th>
- 											<th>Action</th>
+ 											<th style="width: 1%;white-space: nowrap">No</th>
+ 											<th>Nama</th>
+ 											<th style="width: 25%;white-space: nowrap">Jumlah</th>
+ 											<th style="width: 1%;white-space: nowrap">Satuan</th>
+ 											<th style="width: 1%;white-space: nowrap;">Action</th>
  										</tr>
  									</thead>
  									<tbody id="tbody-daftar-peminjaman"></tbody>
@@ -166,6 +106,7 @@
  							</div>
  						</div>
  					</div>
+ 					
  					<div class="col-md-12">
  						<div class="card-footer">
  							<button type="submit" id="btn-submit" class="btn btn-block btn-lg btn-primary">SIMPAN</button>
@@ -182,12 +123,12 @@
  <!-- JS Libraies -->
 
  <script>
- 	let $btnAdd  = $("#btnAddBarang");
+ 	let $btnAdd  = $("#btnAddInventaris");
  	let $addJumlah = $("#addJumlah");
- 	let $addNamaBarang = $("#addNamaBarang");
+ 	let $addNamaInventaris = $("#addNamaInventaris");
 
 
- 	const a = generateBarang({
+ 	const a = generateInventaris({
 
  		addFromClick: function(e)
  		{
@@ -196,22 +137,14 @@
  			let id = a.dom.$select.val();
  			let nama = a.dom.$select.find(':selected').text();
  			let satuan = a.dom.$select.find(':selected').data('satuan');
- 			let sisaTersedia = a.dom.$select.find(':selected').data('sisa');
  			let jumlah = a.dom.$inputJumlah.val();
 
- 			if (sisaTersedia < jumlah || sisaTersedia == 0) {
- 				a.dom.$inputJumlah.val('');
- 				return;
- 			}
-
-
-
+ 			
  			let obj = {
  				id : id,
  				nama : nama,
  				jumlah : jumlah,
  				satuan : satuan,
- 				sisa : sisaTersedia,
  			};
  			if (a.validasiBarang(obj)) {
  				console.log(obj);
@@ -226,7 +159,7 @@
 
  			a.dom.$btnSubmit.attr('disabled', true);
  			var formData = a.dom.$form.serializeArray();
- 			var URL = SITE_URL + 'private/peminjaman_barang/store';
+ 			var URL = SITE_URL + 'private/pengajuan_inventaris/store';
  			$.ajax({
  				url: URL,
  				type: 'POST',
@@ -239,12 +172,12 @@
  				{
  					swalInfo('Berhasil', 'success', 'Berhasil Menambah Data', 2000)
  					.then(r => {
- 						location.href = SITE_URL + 'private/peminjaman_barang';
+ 						location.href = SITE_URL + 'private/pengajuan_inventaris';
  					})
  				}
  				else 
  				{
- 				
+
  					swalInfo('Gagal', 'warning', 'Periksa Input Data', 2000)
 
  				}
@@ -262,16 +195,15 @@
  	});
  	
  	
+ 	let $satuan = $("#satuan");
 
-
- 	$addNamaBarang.change(function() {
+ 	$addNamaInventaris.change(function() {
  		var optionSelected =  $("option:selected", this);
  		var idBarang = optionSelected.val();
- 		var satuan = optionSelected.data('satuan')  || '';
+ 		var satuan = optionSelected.data('satuan') || '';
  		var sisa = optionSelected.data('sisa') || '';
 
- 		var $sisaTersedia = $("#sisaTersedia");
- 		$sisaTersedia.val(sisa + ' ' + satuan);
+ 		$satuan.val(satuan);
  	})
 
 

@@ -12,6 +12,14 @@
           <input type="text" name="nama_barang"  id="nama_barang" class="form-control">
         </div>
         <div class="form-group">
+          <label>Total</label>
+          <input type="number" name="total"  id="total" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Sedang Digunakan</label>
+          <input type="number" readonly name="digunakan"  id="digunakan" class="form-control">
+        </div>
+        <div class="form-group">
           <label>Satuan</label>
           <input type="text" name="satuan"  id="satuan" class="form-control">
         </div>
@@ -125,7 +133,7 @@
         $("input[name='type']").val("edit");
         $("button[type='submit']").text('Simpan');
 
-        $("#modal-barang").iziModal('setTitle', 'Form Ubah Ruangan');
+        $("#modal-barang").iziModal('setTitle', 'Form Ubah Barang');
 
         set_modal_data(data);
 
@@ -154,7 +162,10 @@
 
     $("#error-message").html("");
     $("input[name='id']").val(data.id);
-    $("input[name='nama']").val(data.nama);
+    $("input[name='nama_barang']").val(data.nama_barang);
+    $("input[name='total']").val(data.total);
+    $("input[name='satuan']").val(data.satuan);
+    $("input[name='digunakan']").val(data.digunakan);
     $("#modal-barang").iziModal('open');
     $("#modal-barang .iziModal-wrap").scrollTop(0);            
   }
@@ -164,8 +175,26 @@
     var uri = type == 'new'? 'store' : type == 'edit' ? 'update' : 'delete';
     var url = SITE_URL + 'private/daftar_barang/' + uri;
 
+    var total = $("input[name='total']").val();
+    var digunakan = $("input[name='digunakan']").val();
+
+
+
+    if (digunakan > 0 ) {
+      if (total < digunakan) {
+        $("#error-message").html(
+         `<div class=\"alert alert-danger\">
+         <strong>Ooops!</strong> Terdapat Error.<br><br>
+         Total harus lebih besar dari jumlah yang sedang digunakan
+         </div>
+         `);
+        return;
+      }
+    }
+
     $("button[type='submit']").attr('disabled', true);
     var formData = $('#frm-barang').serializeArray();
+
 
     $.ajax({
       url: url,

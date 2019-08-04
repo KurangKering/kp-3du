@@ -49,47 +49,11 @@
 									@endphp
 									<tr>
 										<td>{{ $peminjaman->nama }}</td>
-										<td>{{ $peminjaman->kegiatan->nama_kegiatan }}</td>
+										<td>{{ $peminjaman->kegiatan }}</td>
 										<td>{{ $peminjaman->ruangan->nama }}</td>
 										<td style="white-space: nowrap; width: 1%;">{{$peminjaman->tanggal}}</td>
 										<td style="text-align: center; width: 1%; white-space: nowrap">
-											@php $stat = ''; 
-											if ($peminjaman->status == '2') {
-
-												$stat = '
-												<button class="btn btn-md btn-block btn-success" type="button">
-												<span class="">
-												<i class="icon-check icons font-2xl d-block"></i>
-												</span>
-												</button>
-												';
-											} else if($peminjaman->status == '-1')
-											{
-
-												$stat = 
-												'
-												<button  class="btn btn-md btn-block btn-danger" type="button">
-												<span>
-												<i class="icon-ban icons font-2xl d-block"></i>
-												</span>
-												</button>
-												';
-											} else 
-											{
-
-												$stat = 
-												'
-												<button  class="btn btn-md btn-block btn-warning" type="button">
-												<span>
-												<i class="icon-reload icons font-2xl d-block"></i>
-												</span>
-												</button>
-												';
-											}
-
-											@endphp
-											
-											{!! $stat !!}
+											{{ hStatusPeminjaman($peminjaman->status) }}
 										</td>
 										<td style="width: 1%; white-space: nowrap">
 											@if ($peminjaman->lembar_disposisi)

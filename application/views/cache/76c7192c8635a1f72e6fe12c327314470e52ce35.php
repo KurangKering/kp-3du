@@ -89,7 +89,7 @@
 		</div>
 	</div>
 </main>
-<?php echo $__env->make('private.peminjaman_ruangan.modal_create_lembar_disposisi', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+<?php echo $__env->make('private.lembar_disposisi.modal_isi_disposisi', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>

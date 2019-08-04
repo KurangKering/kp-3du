@@ -1,5 +1,5 @@
-  <div id="modal-barang" style="display: none;">
-    <form  id="frm-barang">
+  <div id="modal-inventaris" style="display: none;">
+    <form  id="frm-inventaris">
       <input type="hidden" name="id" value="">
       <input type="hidden" name="type" value="get">
       <div class="card">
@@ -9,15 +9,11 @@
          </div>
          <div class="form-group">
           <label>Nama</label>
-          <input type="text" name="nama_barang"  id="nama_barang" class="form-control">
+          <input type="text" name="nama"  id="nama" class="form-control">
         </div>
         <div class="form-group">
-          <label>Total</label>
-          <input type="number" name="total"  id="total" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>Sedang Digunakan</label>
-          <input type="number" readonly name="digunakan"  id="digunakan" class="form-control">
+          <label>Stock</label>
+          <input type="number" name="stock"  id="stock" class="form-control">
         </div>
         <div class="form-group">
           <label>Satuan</label>
@@ -68,7 +64,7 @@
 <?php $__env->startSection('js'); ?>
 ##parent-placeholder-93f8bb0eb2c659b85694486c41717eaf0fe23cd4##
 <script>
-  $("#modal-barang").iziModal({
+  $("#modal-inventaris").iziModal({
     subtitle: '',
     zindex: 5000,
 
@@ -93,9 +89,9 @@
     },
 
   });
-  $("#frm-barang").submit(function(e) {
+  $("#frm-inventaris").submit(function(e) {
     e.preventDefault();
-    submit_barang();
+    submit_inventaris();
 
   })
   var show_detail = function(id)
@@ -122,7 +118,7 @@
     if( id )
     {
       $.ajax({
-        url: SITE_URL + 'private/daftar_barang/info/'+id,
+        url: SITE_URL + 'private/daftar_inventaris/info/'+id,
         type: 'GET',
         dataType: 'json',
 
@@ -133,7 +129,7 @@
         $("input[name='type']").val("edit");
         $("button[type='submit']").text('Simpan');
 
-        $("#modal-barang").iziModal('setTitle', 'Form Ubah Barang');
+        $("#modal-inventaris").iziModal('setTitle', 'Form Ubah Inventaris');
 
         set_modal_data(data);
 
@@ -153,8 +149,8 @@
       $("input[name='type']").val("new");
       $("button[type='submit']").text('Tambah');
 
-      $("#modal-barang").iziModal('setTitle', 'Form Input Barang Baru');
-      $("#modal-barang").iziModal("open");
+      $("#modal-inventaris").iziModal('setTitle', 'Form Input Inventaris Baru');
+      $("#modal-inventaris").iziModal("open");
     }
   }
   var set_modal_data = function(data)
@@ -162,38 +158,21 @@
 
     $("#error-message").html("");
     $("input[name='id']").val(data.id);
-    $("input[name='nama_barang']").val(data.nama_barang);
-    $("input[name='total']").val(data.total);
+    $("input[name='nama']").val(data.nama);
+    $("input[name='stock']").val(data.stock);
     $("input[name='satuan']").val(data.satuan);
-    $("input[name='digunakan']").val(data.digunakan);
-    $("#modal-barang").iziModal('open');
-    $("#modal-barang .iziModal-wrap").scrollTop(0);            
+    $("#modal-inventaris").iziModal('open');
+    $("#modal-inventaris .iziModal-wrap").scrollTop(0);            
   }
-  var submit_barang = function()
+  var submit_inventaris = function()
   {
     var type = $("input[name='type']").val();
     var uri = type == 'new'? 'store' : type == 'edit' ? 'update' : 'delete';
-    var url = SITE_URL + 'private/daftar_barang/' + uri;
+    var url = SITE_URL + 'private/daftar_inventaris/' + uri;
 
-    var total = $("input[name='total']").val();
-    var digunakan = $("input[name='digunakan']").val();
-
-
-
-    if (digunakan > 0 ) {
-      if (total < digunakan) {
-        $("#error-message").html(
-         `<div class=\"alert alert-danger\">
-         <strong>Ooops!</strong> Terdapat Error.<br><br>
-         Total harus lebih besar dari jumlah yang sedang digunakan
-         </div>
-         `);
-        return;
-      }
-    }
 
     $("button[type='submit']").attr('disabled', true);
-    var formData = $('#frm-barang').serializeArray();
+    var formData = $('#frm-inventaris').serializeArray();
 
 
     $.ajax({
@@ -216,7 +195,7 @@
          `
          </div>
          `);
-       $("#modal-barang .iziModal-wrap").scrollTop(0);  
+       $("#modal-inventaris .iziModal-wrap").scrollTop(0);  
      } else if (resp.status == 'success')
      {
       swalInfo('Berhasil', 'success','','2000')
@@ -240,11 +219,11 @@
 
 
   }
-  var delete_barang = function(id)
+  var delete_inventaris = function(id)
   {
     Swal.fire({
       title: 'Hapus ?',
-      text: "Yakin ingin menghapus barang ini ?",
+      text: "Yakin ingin menghapus inventaris ini ?",
       type: 'warning',
       showCancelButton: true,
       cancelButtonColor: '#3085d6',
@@ -253,7 +232,7 @@
     }).then((result) => {
       if (result.value) {
        $.ajax({
-        url: SITE_URL + 'private/daftar_barang/delete/daftar_barang/'+id,
+        url: SITE_URL + 'private/daftar_inventaris/delete/daftar_inventaris/'+id,
         type: 'GET',
         dataType: 'json',
 
@@ -292,4 +271,4 @@
 
   }
 </script>
-<?php $__env->stopSection(); ?><?php /**PATH D:\xZeroxSugarx\xampp\htdocs\kp-edu\application\views/private/daftar_barang/modal_barang.blade.php ENDPATH**/ ?>
+<?php $__env->stopSection(); ?><?php /**PATH D:\xZeroxSugarx\xampp\htdocs\kp-edu\application\views/private/daftar_inventaris/modal_inventaris.blade.php ENDPATH**/ ?>

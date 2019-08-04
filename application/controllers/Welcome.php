@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends Private_Controller {
+class Welcome extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -20,20 +20,16 @@ class Welcome extends Private_Controller {
 	 */
 	public function index()
 	{
-		return view('layouts.backend');
+		$user_id = $this->session->userdata('user')['user_id'];
+		if ($user_id) {
+			return redirect(site_url('private/dashboard'));
+		} else
+		{
+			return redirect(site_url('login'));
+		}
 		
 	}
 
-	public function bar(Array $arr)
-	{
-        $arr = $this->fooBar($arr); // Breakpoint
 
-        return $arr;
-    }
-
-    public function fooBar(Array $arr)
-    {
-    	return array_values($arr);
-    }
 }
 

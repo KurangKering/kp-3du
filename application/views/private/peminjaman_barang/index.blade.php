@@ -30,7 +30,8 @@
 										
 										<th>Nama</th>
 										<th>Kegiatan</th>
-										<th style="white-space: nowrap; width: 1%;">Waktu</th>
+										<th style="white-space: nowrap; width: 1%;">Waktu Mulai</th>
+										<th style="white-space: nowrap; width: 1%;">Waktu Pengembalian</th>
 										<th>Status</th>
 										<th class="">Action</th>
 									</tr>
@@ -41,11 +42,13 @@
 									<tr>
 										<td>{{ $peminjaman->nama }}</td>
 										<td>{{ $peminjaman->kegiatan }}</td>
-										<td style="white-space: nowrap; width: 1%;">{{ $peminjaman->tanggal }}</td>
+										<td style="white-space: nowrap; width: 1%;">{{ indoDate($peminjaman->waktu_mulai, 'd-m-Y H:i') }}</td>
+										<td style="white-space: nowrap; width: 1%;">{{ $peminjaman->waktu_pengembalian ? indoDate($peminjaman->waktu_pengembalian, 'd-m-Y H:i') :  '-' }}</td>
 										<td style="white-space: nowrap; width: 1%;">{{  hStatusPeminjamanBarang($peminjaman->status) }}</td>
 										<td style="width: 1%; white-space: nowrap">
 											<button class="btn btn-primary" onclick="show_modal({{ $peminjaman->id }})">Detail</button>
 											<button class="btn btn-warning" onclick="location.href='{{ site_url('private/peminjaman_barang/edit/'.$peminjaman->id) }}'">Edit</button>
+											<button class="btn btn-danger" onclick="show_delete({{ $peminjaman->id }})"/>Delete</button>
 										</td>
 									</tr>
 									@endforeach

@@ -8,12 +8,17 @@ class Private_Controller extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('M_daftar_barang');
+		$this->load->model('M_daftar_inventaris');
 		$this->load->model('M_det_peminjaman_barang');
+		$this->load->model('M_det_pengajuan_inventaris');
+		$this->load->model('M_det_permintaan_inventaris');
 		$this->load->model('M_isi_disposisi');
 		$this->load->model('M_kegiatan');
 		$this->load->model('M_lembar_disposisi');
 		$this->load->model('M_peminjaman_barang');
 		$this->load->model('M_peminjaman_ruangan');
+		$this->load->model('M_pengajuan_inventaris');
+		$this->load->model('M_permintaan_inventaris');
 		$this->load->model('M_roles');
 		$this->load->model('M_ruangan');
 		$this->load->model('M_users');
@@ -39,9 +44,12 @@ class Private_Controller extends MY_Controller {
 				'dashboard.*',
 				'ruangan.*',
 				'daftar_barang.*',
+				'daftar_inventaris.*',
 				'user.*',
 				'peminjaman_ruangan.*',
 				'peminjaman_barang.*',
+				'pengajuan_inventaris.*',
+				'permintaan_inventaris.*',
 				'lembar_disposisi.*',
 				'isi_disposisi.*',
 			],

@@ -94,6 +94,11 @@
 									</a>
 								</li>
 								<li class="nav-item">
+									<a class="nav-link" href="{{ site_url('private/daftar_inventaris') }}">
+										<i class="nav-icon icon-pie-chart"></i> Daftar Inventaris
+									</a>
+								</li>
+								<li class="nav-item">
 									<a class="nav-link" href="{{ site_url('private/user') }}">
 										<i class="nav-icon icon-pie-chart"></i> Pengguna
 									</a>
@@ -120,9 +125,19 @@
 							<a class="nav-link" href="{{ site_url('private/peminjaman_ruangan') }}">
 								<i class="nav-icon icon-pie-chart"></i> Peminjaman Ruangan
 							</a>
-						</li><li class="nav-item">
+						</li>
+						<li class="nav-item">
 							<a class="nav-link" href="{{ site_url('private/peminjaman_barang') }}">
 								<i class="nav-icon icon-pie-chart"></i> Peminjaman Barang
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ site_url('private/pengajuan_inventaris') }}">
+								<i class="nav-icon icon-pie-chart"></i> Pengajuan Inventaris
+							</a>
+						</li><li class="nav-item">
+							<a class="nav-link" href="{{ site_url('private/permintaan_inventaris') }}">
+								<i class="nav-icon icon-pie-chart"></i> Permintaan Inventaris
 							</a>
 						</li>
 						@endif

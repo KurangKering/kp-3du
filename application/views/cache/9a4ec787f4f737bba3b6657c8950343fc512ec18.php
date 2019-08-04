@@ -29,7 +29,8 @@
 										
 										<th>Nama</th>
 										<th>Kegiatan</th>
-										<th style="white-space: nowrap; width: 1%;">Waktu</th>
+										<th style="white-space: nowrap; width: 1%;">Waktu Mulai</th>
+										<th style="white-space: nowrap; width: 1%;">Waktu Pengembalian</th>
 										<th>Status</th>
 										<th class="">Action</th>
 									</tr>
@@ -40,11 +41,13 @@
 									<tr>
 										<td><?php echo e($peminjaman->nama); ?></td>
 										<td><?php echo e($peminjaman->kegiatan); ?></td>
-										<td style="white-space: nowrap; width: 1%;"><?php echo e($peminjaman->tanggal); ?></td>
+										<td style="white-space: nowrap; width: 1%;"><?php echo e(indoDate($peminjaman->waktu_mulai, 'd-m-Y H:i')); ?></td>
+										<td style="white-space: nowrap; width: 1%;"><?php echo e($peminjaman->waktu_pengembalian ? indoDate($peminjaman->waktu_pengembalian, 'd-m-Y H:i') :  '-'); ?></td>
 										<td style="white-space: nowrap; width: 1%;"><?php echo e(hStatusPeminjamanBarang($peminjaman->status)); ?></td>
 										<td style="width: 1%; white-space: nowrap">
 											<button class="btn btn-primary" onclick="show_modal(<?php echo e($peminjaman->id); ?>)">Detail</button>
 											<button class="btn btn-warning" onclick="location.href='<?php echo e(site_url('private/peminjaman_barang/edit/'.$peminjaman->id)); ?>'">Edit</button>
+											<button class="btn btn-danger" onclick="show_delete(<?php echo e($peminjaman->id); ?>)"/>Delete</button>
 										</td>
 									</tr>
 									<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
