@@ -1,16 +1,16 @@
- @extends('layouts.backend')
- @section('css')
+ 
+ <?php $__env->startSection('css'); ?>
 
 
- @endsection
- @section('content')
+ <?php $__env->stopSection(); ?>
+ <?php $__env->startSection('content'); ?>
  <main class="main">
  	<!-- Breadcrumb-->
  	<ol class="breadcrumb"></ol>
  	<div class="container-fluid">
  		<div class="animated fadeIn">
  			<form  class="form-horizontal" id="form-peminjaman" autocomplete="off">
- 				<input type="hidden" name="permintaan_inventaris_id" value="{{ $dataPermintaan->id }}">
+ 				<input type="hidden" name="permintaan_inventaris_id" value="<?php echo e($dataPermintaan->id); ?>">
  				<!-- /.row-->
  				<div class="row">
  					<div class="col-md-6">
@@ -28,16 +28,7 @@
  								
  								
  								
- 								{{-- <div class="form-group row" id="data_3">
- 									<label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Selesai </label>
- 									<div class="col-md-8">
- 										<div class="input-group clockpicker" id="waktu-selesai">
- 											<input required onkeydown="return false"  type="text" name="inputWaktuSelesai" id="inputWaktuSelesai" class="form-control" value="">
-
- 										</div>
-
- 									</div>
- 								</div> --}}
+ 								
 
  								
 
@@ -60,9 +51,9 @@
  										<div class="input-group-date">
  											<select name="addNamaInventaris" id="addNamaInventaris" class="form-control">
  												<option value="">--silahkan pilih--</option>
- 												@foreach ($daftarInventaris as $inventaris)
- 												<option data-satuan="{{ $inventaris->satuan }}" data-stock="{{ $inventaris->stock }}" value="{{ $inventaris->id }}">{{ $inventaris->nama }}</option>
- 												@endforeach
+ 												<?php $__currentLoopData = $daftarInventaris; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $inventaris): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+ 												<option data-satuan="<?php echo e($inventaris->satuan); ?>" data-stock="<?php echo e($inventaris->stock); ?>" value="<?php echo e($inventaris->id); ?>"><?php echo e($inventaris->nama); ?></option>
+ 												<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
  											</select>
 
  										</div>
@@ -143,17 +134,17 @@
  	</div>
  </main>
 
- @endsection
- @section('js')
+ <?php $__env->stopSection(); ?>
+ <?php $__env->startSection('js'); ?>
  <!-- JS Libraies -->
 
  <script>
 
- 	@php 
+ 	<?php 
  	$phpArrRequested = $requestedInventaris;
  	$jsArrRequested = json_encode($phpArrRequested);
  	echo "var arr_inventaris = " . $jsArrRequested . ";\n";
- 	@endphp
+ 	?>
 
  	let $btnAdd  = $("#btnAddInventaris");
  	let $addJumlah = $("#addJumlah");
@@ -284,4 +275,5 @@
  </script>
 
 
- @endsection
+ <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.backend', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\xZeroxSugarx\xampp\htdocs\kp-edu\application\views/private/permintaan_inventaris/edit.blade.php ENDPATH**/ ?>

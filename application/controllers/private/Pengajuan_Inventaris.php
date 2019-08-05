@@ -150,28 +150,44 @@ class Pengajuan_Inventaris extends Private_Controller {
          	foreach ($MasterDetIDs as $key => $value) {
          		$index = array_search($value, $postDetID);
          		if ($index === FALSE) {
-         			$delDetail = $this->M_det_pengajuan_inventaris->findOrFail($value)->delete();
+         			$delDetail = $this->M_det_pengajuan_inventaris->findOrFail($value);
+
+         			$dataInventaris = $this->M_daftar_inventaris
+         			->findOrFail($delDetail->daftar_inventaris_id); 
+
+         			$stock = $dataInventaris->stock + ($delDetail->jumlah - $postJumlah[$key]);
+         			$dataInventaris->stock = $stock;
+         			$dataInventaris->save();
+
+         			$delDetail->delete();
          		} 
          	}
          	foreach ($postDetID as $key => $value) {
-         		if ($value == 'undefined') {
+         		$dataInventaris = $this->M_daftar_inventaris->findOrFail($postInventarisID[$key]);
+
+         		if ($value == 'undefined' || $value == '') {
          			$newDetPengajuan = $this->M_det_pengajuan_inventaris->create([
          				'pengajuan_inventaris_id' => $pengajuan->id,
          				'daftar_inventaris_id' => $postInventarisID[$key],
          				'jumlah' => $postJumlah[$key],
          			]);
+
+         			$dataInventaris->stock = $dataInventaris->stock + $postJumlah[$key];
+         			$dataInventaris->save();
          		} else 
          		{
-         			$detPengajuan = $this->M_det_pengajuan_inventaris->where('id', $value)->get()->first();
-         			if ($detPengajuan) {
-         				$detPengajuan->daftar_inventaris_id = $postInventarisID[$key];
-         				$detPengajuan->jumlah = $postJumlah[$key];
-         				$detPengajuan->save();
-         			} 
+         			$detPengajuan = $this->M_det_pengajuan_inventaris->findOrFail($value);
+         			$stock = $dataInventaris->stock + ($detPengajuan->jumlah - $postJumlah[$key]);
+         			$dataInventaris->stock = $stock;
+         			$dataInventaris->save();
+
+
+         			$detPengajuan->jumlah = $postJumlah[$key];
+         			$detPengajuan->save();
          		}
          	}
 
-     
+
          }
 
 
@@ -193,9 +209,12 @@ class Pengajuan_Inventaris extends Private_Controller {
      	->with('det_pengajuan_inventaris')
      	->findOrFail($id);
 
-     	$dataPengajuan->det_pengajuan_inventaris->each(function($i) {
-     		$i->delete();
-     	});
+     	foreach ($dataPengajuan->det_pengajuan_inventaris as $key => $detail) {
+     		$dataInventaris = $this->M_daftar_inventaris->findOrFail($detail->daftar_inventaris_id);
+     		$dataInventaris->stock = $dataInventaris->stock - $detail->jumlah;
+     		$dataInventaris->save();
+     		$detail->delete();
+     	}
      	$dataPengajuan->delete();
 
 

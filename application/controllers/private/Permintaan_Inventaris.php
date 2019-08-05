@@ -103,20 +103,34 @@ class Permintaan_Inventaris extends Private_Controller {
 
 	public function edit($id)
 	{
-		$dataPengajuan = $this->M_permintaan_inventaris
+		$dataPermintaan = $this->M_permintaan_inventaris
 		->with('det_permintaan_inventaris.daftar_inventaris')
 		->findOrFail($id);
 
+		$dataPermintaanLama = $this->M_permintaan_inventaris->where('id', '<', $dataPermintaan->id)->get();
+		
+
 		$requestedInventaris = [];
-		foreach ($dataPengajuan->det_permintaan_inventaris as $key => $detPengajuan) {
-			$requestedInventaris[$key]['det_permintaan_inventaris_id'] = $detPengajuan->id;
-			$requestedInventaris[$key]['id'] = $detPengajuan->daftar_inventaris->id;
-			$requestedInventaris[$key]['nama'] = $detPengajuan->daftar_inventaris->nama;
-			$requestedInventaris[$key]['satuan'] = $detPengajuan->daftar_inventaris->satuan;
-			$requestedInventaris[$key]['jumlah'] = $detPengajuan->jumlah;
+		foreach ($dataPermintaan->det_permintaan_inventaris as $key => $detPermintaan) {
+
+
+			$dataInventaris = $this->M_daftar_inventaris
+			->findOrFail($detPermintaan->daftar_inventaris_id);
+
+			$stockSekarang = $dataInventaris->stock + $detPermintaan->jumlah;
+			$requestedInventaris[$key]['det_permintaan_inventaris_id'] = $detPermintaan->id;
+			$requestedInventaris[$key]['id'] = $detPermintaan->daftar_inventaris->id;
+			$requestedInventaris[$key]['nama'] = $detPermintaan->daftar_inventaris->nama;
+			$requestedInventaris[$key]['satuan'] = $detPermintaan->daftar_inventaris->satuan;
+			$requestedInventaris[$key]['jumlah'] = $detPermintaan->jumlah;
+			$requestedInventaris[$key]['stock'] = $stockSekarang;
 		}
 
-		$this->vars['dataPengajuan'] = $dataPengajuan;
+		$daftarInventaris = $this->M_daftar_inventaris->get();
+
+		
+		$this->vars['daftarInventaris'] = $daftarInventaris;
+		$this->vars['dataPermintaan'] = $dataPermintaan;
 		$this->vars['requestedInventaris'] = $requestedInventaris;
 		return view('private.permintaan_inventaris.edit', $this->vars);
 	}
@@ -128,7 +142,7 @@ class Permintaan_Inventaris extends Private_Controller {
 		if ($post['val_id'] == NULL) {
 			$this->response->addError('Tidak Ada Barang yang di pilih', 'val_id');
 		}
-		$valSisa = $post['val_sisa'];
+		$valSisa = $post['val_stock'];
 		$valJumlah = $post['val_jumlah'];
 		$valID = $post['val_id'];
 		foreach (($post['val_id'] ?? []) as $k => $id) {
@@ -143,8 +157,8 @@ class Permintaan_Inventaris extends Private_Controller {
 		{
 			$post = $this->input->post();
 
-			$pengajuan = $this->M_permintaan_inventaris->with('det_permintaan_inventaris')->findOrFail($post['pengajuan_inventaris_id']);
-			$MasterDetIDs = $pengajuan->det_permintaan_inventaris->pluck('id');
+			$permintaan = $this->M_permintaan_inventaris->with('det_permintaan_inventaris')->findOrFail($post['permintaan_inventaris_id']);
+			$MasterDetIDs = $permintaan->det_permintaan_inventaris->pluck('id');
 			$postDetID = $post['val_det_id'];
 			$postJumlah = $post['val_jumlah'];
 			$postInventarisID = $post['val_id'];
@@ -154,24 +168,44 @@ class Permintaan_Inventaris extends Private_Controller {
          	foreach ($MasterDetIDs as $key => $value) {
          		$index = array_search($value, $postDetID);
          		if ($index === FALSE) {
-         			$delDetail = $this->M_depermintaan_pengajuan_inventaris->findOrFail($value)->delete();
+
+
+         			$delDetail = $this->M_det_permintaan_inventaris->findOrFail($value);
+
+         			$dataInventaris = $this->M_daftar_inventaris
+         			->findOrFail($delDetail->daftar_inventaris_id); 
+
+         			$dataInventaris->stock = $dataInventaris->stock + $delDetail->jumlah;
+         			$dataInventaris->save();
+
+         			$delDetail->delete();
          		} 
          	}
          	foreach ($postDetID as $key => $value) {
-         		if ($value == 'undefined') {
-         			$newDetPengajuan = $this->M_depermintaan_pengajuan_inventaris->create([
-         				'pengajuan_inventaris_id' => $pengajuan->id,
+         		$dataInventaris = $this->M_daftar_inventaris->findOrFail($postInventarisID[$key]);
+         		if ($value == 'undefined' || $value == '') {
+         			$newDetPermintaan = $this->M_det_permintaan_inventaris->create([
+         				'permintaan_inventaris_id' => $permintaan->id,
          				'daftar_inventaris_id' => $postInventarisID[$key],
          				'jumlah' => $postJumlah[$key],
          			]);
+
+         			$dataInventaris->stock = $dataInventaris->stock - $postJumlah[$key];
+         			$dataInventaris->save();
+
+
          		} else 
          		{
-         			$detPengajuan = $this->M_depermintaan_pengajuan_inventaris->where('id', $value)->get()->first();
-         			if ($detPengajuan) {
-         				$detPengajuan->daftar_inventaris_id = $postInventarisID[$key];
-         				$detPengajuan->jumlah = $postJumlah[$key];
-         				$detPengajuan->save();
-         			} 
+         			$detPermintaan = $this->M_det_permintaan_inventaris->findOrFail($value);
+         			$stock = ($dataInventaris->stock + $detPermintaan->jumlah) - $postJumlah[$key];
+         			$dataInventaris->stock = $stock;
+         			$dataInventaris->save();
+
+         			$detPermintaan->jumlah = $postJumlah[$key];
+         			$detPermintaan->save();
+
+
+         			
          		}
          	}
 
@@ -197,9 +231,13 @@ class Permintaan_Inventaris extends Private_Controller {
      	->with('det_permintaan_inventaris')
      	->findOrFail($id);
 
-     	$dataPermintaan->det_permintaan_inventaris->each(function($i) {
-     		$i->delete();
-     	});
+     	foreach ($dataPermintaan->det_permintaan_inventaris as $key => $detail) {
+     		$dataInventaris = $this->M_daftar_inventaris->findOrFail($detail->daftar_inventaris_id);
+     		$dataInventaris->stock = $dataInventaris->stock + $detail->jumlah;
+     		$dataInventaris->save();
+     		$detail->delete();
+     	}
+     	
      	$dataPermintaan->delete();
 
 

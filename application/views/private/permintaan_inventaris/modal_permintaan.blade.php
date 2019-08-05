@@ -235,7 +235,7 @@
     }).then((result) => {
       if (result.value) {
        $.ajax({
-        url: SITE_URL + 'private/pengajuan_inventaris/delete/',
+        url: SITE_URL + 'private/permintaan_inventaris/delete/',
         type: 'POST',
         data: {id : id},
         dataType: 'json',
