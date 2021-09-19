@@ -13,9 +13,10 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Daftar Barang
+						<div class="card-header">
+							<span class="h3">Daftar Barang</span>
 							<div class="card-header-actions">
-								<button class="btn btn-primary" type="button" onclick="show_modal()">Tambah Barang</button>
+								<button class="btn btn-primary" type="button" onclick="show_modal()"><i class="icon-plus"></i>  Tambah Barang</button>
 							</div>
 						</div>
 						<div class="card-body">

@@ -18,7 +18,8 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Data Peminjaman Ruangan
+						<div class="card-header">
+							<span class="h3">Data Peminjaman Ruangan</span>
 
 							<div class="card-header-actions">
 								<button type="button" class="btn btn-primary" id="btn-create" onclick="location.href='{{ site_url('private/peminjaman_ruangan/create') }}'">Pinjam Ruangan</button>

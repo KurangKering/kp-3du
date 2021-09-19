@@ -14,7 +14,8 @@
 		"php": ">=5.3.7",
 		"jenssegers/blade": "^1.1",
 		"filp/whoops": "^2.3",
-		"illuminate/database": "^5.8"
+		"illuminate/database": "^5.8",
+		"mpdf/mpdf": "^8.0"
 	},
 	"autoload": {
 		"classmap": [
@@ -27,7 +28,7 @@
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
 	},
 	"require-dev": {
-		"mikey179/vfsStream": "1.1.*",
+		"mikey179/vfsstream": "1.1.*",
 		"phpunit/phpunit": "4.* || 5.*"
 	}
 }

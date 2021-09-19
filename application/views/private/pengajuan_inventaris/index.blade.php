@@ -13,9 +13,10 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Daftar Pengajuan Inventaris
+						<div class="card-header">
+							<span class="h3">Daftar Pengajuan Inventaris</span>
 							<div class="card-header-actions">
-								<button class="btn btn-primary" type="button" onclick="location.href='{{ site_url('private/pengajuan_inventaris/create') }}'">Tambah Pengajuan</button>
+								<button class="btn btn-primary" type="button" onclick="location.href='{{ site_url('private/pengajuan_inventaris/create') }}'"><i class="icon-plus"></i> Tambah Pengajuan</button>
 							</div>
 						</div>
 						<div class="card-body">

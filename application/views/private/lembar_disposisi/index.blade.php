@@ -17,7 +17,8 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Data Lembar Disposisi
+						<div class="card-header">
+							<span class="h3">Data Lembar Disposisi</span>
 
 						</div>
 						<div class="card-body">

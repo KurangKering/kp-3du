@@ -10,9 +10,14 @@
 			<!-- /.row-->
 			<div class="row">
 				<div class="col-md-12">
-					<div class="card">
-						
+					<div class="card" style="min-height: 71vh;">
+
 						<div class="card-body">
+							<div class="text-center">
+							<p><strong>SELAMAT DATANG DI</strong> <br>
+								Sistem Peminjaman dan Inventory Sarana Prasarana.
+							</p>
+							</div>
 						</div>
 					</div>
 				</div>

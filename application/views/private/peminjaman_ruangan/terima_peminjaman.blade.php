@@ -13,7 +13,8 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Hasil Disposisi
+						<div class="card-header">
+							<span class="h3">Hasil Disposisi</span>
 						</div>
 						<div class="card-body">
 							<table class="table table-striped table-bordered">

@@ -13,9 +13,10 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Data Ruangan
+						<div class="card-header">
+							<span class="h3">Data Ruangan</span>
 							<div class="card-header-actions">
-								<button class="btn btn-primary" type="button" onclick="show_modal()">Tambah Ruangan</button>
+								<button class="btn btn-primary" type="button" onclick="show_modal()"><i class="icon-plus"></i>  Tambah Ruangan</button>
 							</div>
 						</div>
 						<div class="card-body">

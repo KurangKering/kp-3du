@@ -13,7 +13,8 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Data Isi Disposisi
+						<div class="card-header">
+							<span class="h3">Data Isi Disposisi</span>
 
 						</div>
 						<div class="card-body">

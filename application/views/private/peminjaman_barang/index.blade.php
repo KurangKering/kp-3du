@@ -17,7 +17,8 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">Data Peminjaman Barang
+						<div class="card-header">
+							<span class="h3">Data Peminjaman Barang</span>
 							<div class="card-header-actions">
 								<button type="button" class="btn btn-primary" onclick="location.href='{{ site_url('private/peminjaman_barang/create') }}'">Tambah Peminjaman</button>
 							</div>

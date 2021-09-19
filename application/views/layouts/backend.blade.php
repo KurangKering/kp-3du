@@ -8,7 +8,7 @@
 	<meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
 	<meta name="author" content="Łukasz Holeczek">
 	<meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-	<title>##</title>
+	<title>Sistem Peminjaman dan Inventory Sarana Prasarana</title>
 	<!-- Icons-->
 	<link href="{{ site_url('assets/templates/backend/vendors/@coreui/icons/css/coreui-icons.min.css') }}" rel="stylesheet">
 	<link href="{{ site_url('assets/templates/backend/vendors/flag-icon-css/css/flag-icon.min.css') }}" rel="stylesheet">
@@ -43,16 +43,16 @@
 		<button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
 			<span class="navbar-toggler-icon"></span>
 		</button>
-		<a class="navbar-brand" href="{{ site_url('assets/templates/backend/#') }}">
-			<img class="navbar-brand-full" src="{{ site_url('assets/templates/backend/img/brand/logo.svg') }}" width="89" height="25" alt="CoreUI Logo">
-			<img class="navbar-brand-minimized" src="{{ site_url('assets/templates/backend/img/brand/sygnet.svg') }}" width="30" height="30" alt="CoreUI Logo">
+		<a class="navbar-brand" href="javascript:void(0);">
+			<img class="navbar-brand-full" src="{{ site_url('assets/images/logo backend edu.png') }}" width="89" height="20" alt="Sistem Logo">
+			<img class="navbar-brand-minimized" src="{{ site_url('assets/images/logo backend edu.png') }}" width="30" height="30" alt="Sistem Logo">
 		</a>
 		<button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<ul class="nav navbar-nav ml-auto">
 			<li class="nav-item dropdown mr-3">
-				<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+				<a class="nav-link" data-toggle="dropdown" href="javascript:void(0);" role="button" aria-haspopup="true" aria-expanded="false">
 					{{ $currentRole->role_name }}
 				</a>
 				<div class="dropdown-menu dropdown-menu-right">
@@ -73,71 +73,75 @@
 						<li class="nav-title">Daftar Menu</li>
 						<li class="nav-item">
 							<a class="nav-link" href="{{ site_url('private/dashboard') }}">
-								<i class="nav-icon icon-pie-chart"></i> Dashboard
+								<i class="nav-icon icon-arrow-right"></i> Dashboard
 							</a>
 						</li>
 
 						@if(strtolower($currentRole->role_name) == 'umum')
 						<li class="nav-item nav-dropdown">
-							<a class="nav-link nav-dropdown-toggle" href="{{ site_url('assets/templates/backend/#') }}">
-								<i class="nav-icon icon-pie-chart"></i> Master Data
+							<a class="nav-link nav-dropdown-toggle" href="javascript:void(0);">
+								<i class="nav-icon icon-arrow-right"></i> Master Data
 							</a>
 							<ul class="nav-dropdown-items">
 								<li class="nav-item">
 									<a class="nav-link" href="{{ site_url('private/ruangan') }}">
-										<i class="nav-icon icon-pie-chart"></i> Ruangan
+										<i class="nav-icon icon-arrow-right"></i> Ruangan
 									</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" href="{{ site_url('private/daftar_barang') }}">
-										<i class="nav-icon icon-pie-chart"></i> Daftar Barang
+										<i class="nav-icon icon-arrow-right"></i> Daftar Barang
 									</a>
 								</li>
 								<li class="nav-item">
 									<a class="nav-link" href="{{ site_url('private/daftar_inventaris') }}">
-										<i class="nav-icon icon-pie-chart"></i> Daftar Inventaris
+										<i class="nav-icon icon-arrow-right"></i> Daftar Inventaris
 									</a>
 								</li>
-								<li class="nav-item">
-									<a class="nav-link" href="{{ site_url('private/user') }}">
-										<i class="nav-icon icon-pie-chart"></i> Pengguna
-									</a>
-								</li>
-								
-								
 							</ul>
 						</li>
 						@endif
+
+						@if(strtolower($currentRole->role_name) == 'admin')
+						<li class="nav-item">
+									<a class="nav-link" href="{{ site_url('private/user') }}">
+										<i class="nav-icon icon-arrow-right"></i> Pengguna
+									</a>
+								</li>
+						@endif
 						
+						@if(strtolower($currentRole->role_name) != 'admin')
 						<li class="nav-item">
 							<a class="nav-link" href="{{ site_url('private/lembar_disposisi') }}">
-								<i class="nav-icon icon-pie-chart"></i> Lembar Disposisi
+								<i class="nav-icon icon-arrow-right"></i> Lembar Disposisi
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="{{ site_url('private/isi_disposisi') }}">
-								<i class="nav-icon icon-pie-chart"></i> Isi Disposisi
+								<i class="nav-icon icon-arrow-right"></i> Isi Disposisi
 							</a>
 						</li>
+						@endif
 						@if(strtolower($currentRole->role_name) == 'umum')
 
 						<li class="nav-item">
 							<a class="nav-link" href="{{ site_url('private/peminjaman_ruangan') }}">
-								<i class="nav-icon icon-pie-chart"></i> Peminjaman Ruangan
+								<i class="nav-icon icon-arrow-right"></i> Peminjaman Ruangan
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="{{ site_url('private/peminjaman_barang') }}">
-								<i class="nav-icon icon-pie-chart"></i> Peminjaman Barang
+								<i class="nav-icon icon-arrow-right"></i> Peminjaman Barang
 							</a>
 						</li>
-						<li class="nav-item">
+						<!-- <li class="nav-item">
 							<a class="nav-link" href="{{ site_url('private/pengajuan_inventaris') }}">
-								<i class="nav-icon icon-pie-chart"></i> Pengajuan Inventaris
+								<i class="nav-icon icon-arrow-right"></i> Pengajuan Inventaris
 							</a>
-						</li><li class="nav-item">
+						</li>
+						<li class="nav-item"> -->
 							<a class="nav-link" href="{{ site_url('private/permintaan_inventaris') }}">
-								<i class="nav-icon icon-pie-chart"></i> Permintaan Inventaris
+								<i class="nav-icon icon-arrow-right"></i> Permintaan Inventaris
 							</a>
 						</li>
 						@endif
@@ -152,13 +156,13 @@
 
 		<footer class="app-footer">
 			<div>
-				<a href="{{ site_url('assets/templates/backend/https://coreui.io') }}">CoreUI
+				<a href="javascript:void(0);">CoreUI
 				</a>
-				<span>&copy; 2018 creativeLabs.</span>
+				<span>&copy; 2019 Sistem Peminjaman dan Inventory Sarana Prasarana.</span>
 			</div>
 			<div class="ml-auto">
-				<span>Powered by</span>
-				<a href="{{ site_url('assets/templates/backend/https://coreui.io') }}">CoreUI
+				<span>Template By</span>
+				<a href="javascript:void(0);">CoreUI
 				</a>
 			</div>
 		</footer>
