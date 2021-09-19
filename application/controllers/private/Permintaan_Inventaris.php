@@ -234,7 +234,7 @@ class Permintaan_Inventaris extends Private_Controller
 	public function cetak()
 	{
 		$id = $this->input->get('id');
-		
+
 		$dataPermintaan = $this->M_permintaan_inventaris
 			->with('det_permintaan_inventaris')
 			->findOrFail($id);
@@ -242,8 +242,9 @@ class Permintaan_Inventaris extends Private_Controller
 		$view = $this->load->view('private/permintaan_inventaris/cetak', ['data' => $dataPermintaan], true);
 
 		$mpdf = new Mpdf();
+		$mpdf->SetTitle("Cetak Permintaan Inventaris #{$id}");
 		$mpdf->WriteHTML($view);
-		$mpdf->Output();
+		$mpdf->Output("Daftar Permintaan Inventaris #{$id}.pdf", 'I');
 	}
 }
 

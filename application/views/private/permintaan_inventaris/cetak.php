@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 
     <style>
         #table-barang {
@@ -34,7 +33,7 @@
     <table cellpadding="0" cellspacing="0" id="table-barang">
         <thead>
             <tr>
-                <th >No</th>
+                <th>No</th>
                 <th style="width: 40%;">Nama Barang</th>
                 <th style="width: 30%;">Jumlah Kebutuhan</th>
                 <th style="width: 20%;">Ket</th>
@@ -45,8 +44,14 @@
             <?php foreach ($data->det_permintaan_inventaris as $detail) : ?>
                 <tr>
                     <td style="text-align: center;"><?php echo $nomor++; ?></td>
-                    <td><?php echo $detail->daftar_inventaris->nama; ?></td>
-                    <td style="text-align: center;"><?php echo $detail->jumlah; ?></td>
+                    <td>
+                        <?php echo $detail->daftar_inventaris->nama;
+                        ?>
+                    </td>
+                    <td style="text-align: center;"><?php 
+                    echo $detail->jumlah . " " . $detail->daftar_inventaris->satuan
+                    ?>
+                    </td>
                     <td style="text-align: center;">-</td>
                 </tr>
             <?php endforeach ?>
@@ -64,6 +69,7 @@
         <div style="width: 40%; float: right;">
             <div style="text-align: left !important;">
                 Pekanbaru, <?php echo $tanggal ?? indoDate(date('Y-m-d'), 'd F Y'); ?> <br>
+                <strong>Kabbag</strong>
                 <br>
                 <br>
                 <br>
