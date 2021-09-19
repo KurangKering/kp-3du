@@ -14,9 +14,9 @@
 
 						<div class="card-body">
 							<div class="text-center">
-							<p><strong>SELAMAT DATANG DI</strong> <br>
+							<h2><strong>SELAMAT DATANG DI</strong> <br>
 								Sistem Peminjaman dan Inventory Sarana Prasarana.
-							</p>
+							</h2>
 							</div>
 						</div>
 					</div>
