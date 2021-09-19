@@ -38,7 +38,7 @@
 									<tr>
 										<td>{{ $lembar->id }}</td>
 										<td>{{ $lembar->position_role->role_name }}</td>
-										<td>{{ $lembar->tanggal }}</td>
+										<td>{{ indoDate($lembar->tanggal, 'd-m-Y') }}</td>
 
 										<td style="width: 1%; white-space: nowrap">
 											
