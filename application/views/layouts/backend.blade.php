@@ -39,7 +39,6 @@
 	</script>
 </head>
 <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
-gg
 	<header class="app-header navbar">
 		<button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
 			<span class="navbar-toggler-icon"></span>
@@ -135,12 +134,12 @@ gg
 								<i class="nav-icon icon-arrow-right"></i> Peminjaman Barang
 							</a>
 						</li>
-						<!-- <li class="nav-item">
+						<li class="nav-item">
 							<a class="nav-link" href="{{ site_url('private/pengajuan_inventaris') }}">
 								<i class="nav-icon icon-arrow-right"></i> Pengajuan Inventaris
 							</a>
 						</li>
-						<li class="nav-item"> -->
+						<li class="nav-item">
 							<a class="nav-link" href="{{ site_url('private/permintaan_inventaris') }}">
 								<i class="nav-icon icon-arrow-right"></i> Permintaan Inventaris
 							</a>

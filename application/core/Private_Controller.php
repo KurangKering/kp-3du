@@ -47,7 +47,7 @@ class Private_Controller extends MY_Controller {
 				'daftar_inventaris.*',
 				'peminjaman_ruangan.*',
 				'peminjaman_barang.*',
-				// 'pengajuan_inventaris.*',
+				'pengajuan_inventaris.*',
 				'permintaan_inventaris.*',
 				'lembar_disposisi.*',
 				'isi_disposisi.*',
