@@ -32,7 +32,7 @@ class Ruangan extends Private_Controller {
 	public function store() 
 	{	
 
-		$this->form_validation->set_rules('nama', 'Nama', 'trim|required');
+		$this->form_validation->set_rules('nama', 'Nama Ruangan', 'trim|required');
 		if ($this->form_validation->run() === FALSE) {
 			$this->vars['status'] = 'error';
 			$this->vars['messages'] = validation_errors();

@@ -10,6 +10,7 @@ class M_peminjaman_barang extends Eloquent
 		'waktu_mulai',
 		'status',
 		'waktu_pengembalian',
+		'bukti',
 
 	];
 

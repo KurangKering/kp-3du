@@ -11,6 +11,7 @@ class M_peminjaman_ruangan extends Eloquent
 		'waktu_mulai',
 		'waktu_selesai',
 		'status',
+		'bukti'
 	];
 
 

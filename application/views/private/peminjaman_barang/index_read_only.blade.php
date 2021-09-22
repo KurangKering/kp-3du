@@ -22,8 +22,7 @@
                                 <span class="h3">Data Peminjaman Barang</span>
                                 <div class="card-header-actions">
                                     <button type="button" class="btn btn-primary"
-                                        onclick="location.href='{{ site_url('private/peminjaman_barang/create') }}'">Tambah
-                                        Peminjaman</button>
+                                        onclick="show_rekap()">Cetak</button>
                                 </div>
 
                             </div>
@@ -100,6 +99,7 @@
                 '_blank' // <- This is what makes it open in a new window.
             );
         }
+
     </script>
 
 

@@ -68,25 +68,25 @@
                                                                 if ($peminjaman->lembar_disposisi->status == '1') {
                                                                     $statDis =
                                                                         '
-                                                                <button onclick="show_disposisi(' .
+                                                                                                                                                                                                <button onclick="show_disposisi(' .
                                                                         $peminjaman->lembar_disposisi->id .
                                                                         ')" class="btn btn-md btn-block btn-warning" type="button">
-                                                                <span>
-                                                                <i class="icon-reload icons font-2xl d-block"></i>
-                                                                </span>
-                                                                </button>
-                                                                ';
+                                                                                                                                                                                                <span>
+                                                                                                                                                                                                <i class="icon-reload icons font-2xl d-block"></i>
+                                                                                                                                                                                                </span>
+                                                                                                                                                                                                </button>
+                                                                                                                                                                                                ';
                                                                 } elseif ($peminjaman->lembar_disposisi->status == '2') {
                                                                     $statDis =
                                                                         '
-                                                                <button onclick="show_disposisi(' .
+                                                                                                                                                                                                <button onclick="show_disposisi(' .
                                                                         $peminjaman->lembar_disposisi->id .
                                                                         ')" class="btn btn-md btn-block btn-success" type="button">
-                                                                <span>
-                                                                <i class="icon-check icons font-2xl d-block"></i>
-                                                                </span>
-                                                                </button>
-                                                                ';
+                                                                                                                                                                                                <span>
+                                                                                                                                                                                                <i class="icon-check icons font-2xl d-block"></i>
+                                                                                                                                                                                                </span>
+                                                                                                                                                                                                </button>
+                                                                                                                                                                                                ';
                                                                 }
                                                             @endphp
                                                             {!! $statDis !!}
@@ -111,9 +111,55 @@
         </div>
     </main>
     @include('private.peminjaman_ruangan.modal_create_lembar_disposisi')
+
+    <div class="modal fade" id="modal-rekap" tabindex="-1" role="dialog" aria-labelledby="modalRekapLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="form-rekap">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Rekap Data Peminjaman Barang</h4>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="error-message">
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Bulan</label>
+                                    <select name="inputBulan" id="inputBulan" class="form-control" required>
+                                        @foreach (hBulanHuman() as $angka => $nama)
+                                            <option value="{{ $angka }}" @if ($angka == date('n'))
+                                                selected
+                                        @endif
+
+                                        >{{ $nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Tahun</label>
+                                    <input type="text" name="inputTahun" id="inputTahun" class="form-control" required
+                                        value="{{ date('Y') }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit">Cetak</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('js')
-    <!-- JS Libraies -->
 
     <script>
         $("#table-ruangan").dataTable({
@@ -122,6 +168,18 @@
                 "sortable": false,
                 "targets": [2]
             }]
+        });
+
+
+        $("#form-rekap").submit(function(e) {
+            e.preventDefault();
+            query = $(this).serialize();
+            window.open(
+                '{{ site_url('private/peminjaman_ruangan/rekap') }}' + "?" + query,
+                '_blank'
+            );
+
+            $("#modal-rekap").modal('hide');
         });
     </script>
 

@@ -6,17 +6,17 @@ class Isi_Disposisi extends Private_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 	}
 	public function index()
-	{	
+	{
 		$this->vars['dataIsi'] = $this->M_isi_disposisi->latest()->get();
 
 		return view('private.isi_disposisi.index', $this->vars);
 	}
 
 	public function create()
-	{	
+	{
 		$post = $this->input->post();
 		$post['isi_penolakan'] = isset($post['isi_penolakan']) ? $post['isi_penolakan'] : null;
 		$allRole = $this->M_roles->get();
@@ -51,7 +51,7 @@ class Isi_Disposisi extends Private_Controller {
 		$lembarDisposisi = $this->M_lembar_disposisi->findOrFail($post['lembar_disposisi_id']);
 		if ($lembarDisposisi->status == '2' && $lembarDisposisi->position_role_id == $roleUmum->id) {
 			$this->vars['status'] == 'error';
-		} else 
+		} else
 		{
 			$lembarDisposisi->position_role_id = $positionRoleId;
 			$lembarDisposisi->status = $statusDisposisi;
@@ -77,7 +77,7 @@ class Isi_Disposisi extends Private_Controller {
 		->_display();
 
 		exit;
-		
+
 
 	}
 

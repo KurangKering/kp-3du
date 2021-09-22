@@ -56,13 +56,16 @@ class Private_Controller extends MY_Controller {
 				'dashboard.*',
 				'lembar_disposisi.*',
 				'isi_disposisi.*',
-				'peminjaman_ruangan.*',
+				'peminjaman_ruangan.rekap',
+				'peminjaman_barang.rekap',
+				'peminjaman_barang.indexReadOnly',
 			],
 			'dekan' => [
 				'dashboard.*',
-				'lembar_disposisi.*',
-				'isi_disposisi.*',
-				'peminjaman_ruangan.*',
+				'peminjaman_ruangan.rekap',
+				'peminjaman_barang.rekap',
+				'peminjaman_barang.indexReadOnly',
+
 			],
 		];
 
