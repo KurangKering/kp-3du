@@ -255,7 +255,7 @@ class Peminjaman_Ruangan extends Private_Controller
 		$inputBulan = $this->input->get('inputBulan');
 
 		$dataPeminjaman = $this->M_peminjaman_ruangan
-			->with('det_peminjaman_barang');
+			->with('det_peminjaman_ruangan');
 
 		$query = DB::table('det_peminjaman_barang')
 			->select(DB::raw('daftar_barang.nama_barang, SUM(det_peminjaman_barang.jumlah) AS jumlah, daftar_barang.satuan'))

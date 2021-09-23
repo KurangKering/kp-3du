@@ -477,17 +477,17 @@ let generateInventarisRuangan = (function (settings) {
 		populateTable: populateTable,
 	}, settings);
 
+	var noUrut = 1;
 	//bind events
 	options.dom.$btnTambah.on('click', options.addFromClick);
 	options.dom.$form.on('submit', options.submitData);
 	//methods
 	function addFromClick() {
-		console.log('welcome');
 		let namaInventaris = options.dom.$inputNamaInventaris.val();
 		let jumlah = options.dom.$inputJumlah.val();
 		let satuan = options.dom.$inputSatuan.val();
 		let obj = {
-			det_ruangan_id: null,
+			noUrut: noUrut++,
 			nama: namaInventaris,
 			jumlah: jumlah,
 			satuan: satuan,
@@ -496,19 +496,24 @@ let generateInventarisRuangan = (function (settings) {
 		if (validasiBarang(obj)) {
 			options.data.push(obj);
 			populateTable();
+			clearForm();
 		}
+	}
+	function clearForm() {
+		$("#addNamaInventaris").val('');
+		$("#addJumlah").val('');
+		$("#addSatuan").val('');
 	}
 	function validasiBarang(obj) {
 		if (obj.jumlah <= 0 || obj.nama == '' || obj.satuan == '') return false;
-		return true;
-		// if (checkBarang(options.data, obj.id) === false && obj.id != null && obj.jumlah != '')
-		// return true;	
+		if (checkBarang(options.data, obj.nama) === false && obj.nama != '' && obj.jumlah != '')
+			return true;
 	}
 	function populateTable() {
 		var data = options.data;
 		var el = options.dom.$content;
 		emptyTable(el);
-		$.each(data.reverse(), function (index, val) {
+		$.each(data.slice(), function (index, val) {
 			val.det_ruangan_id = val.det_ruangan_id || "undefined";
 
 			var noPage = index + 1;
@@ -519,47 +524,82 @@ let generateInventarisRuangan = (function (settings) {
 				style: "vertical-align:middle;"
 			}))
 				.append($("<td/>", {
-					text: val.nama,
 					style: "vertical-align:middle;"
-				}))
+				})
+					.append($("<input/>", {
+						type: 'text',
+						name: 'val_nama[]',
+						attr: {
+							'readonly': true,
 
+						},
+						value: val.nama,
+						class: 'form-control',
+					})))
 				.append($("<td/>", {
 					class: 'text-center'
 				})
 					.append($("<input/>", {
 						type: 'number',
 						name: 'val_jumlah[]',
-						attr: { 'data-det_ruangan_id': val.det_ruangan_id },
+						attr: {
+							'data-det_ruangan_id': val.det_ruangan_id,
+							'data-nama': val.nama,
+
+						},
 						value: val.jumlah,
 						class: 'form-control',
 					})
 						.keyup(function (e) {
 							var dataID = $(this).data('det_ruangan_id');
+							var dataNama = $(this).data('nama');
 							var jumlah = $(this).val();
 							$.each(options.data, function (index, _data) {
-								if (_data.det_ruangan_id == dataID) {
+								if (_data.nama == dataNama) {
 									options.data[index].jumlah = jumlah;
 									return;
 								}
 							});
 						})))
 				.append($("<td/>", {
-					text: val.satuan,
 					style: "vertical-align:middle;"
-				}))
+				})
+					.append($("<input/>", {
+						type: 'text',
+						name: 'val_satuan[]',
+						attr: {
+							'data-det_ruangan_id': val.det_ruangan_id,
+							'data-nama': val.nama,
+
+						},
+						value: val.satuan,
+						class: 'form-control',
+					})
+						.keyup(function (e) {
+							var dataID = $(this).data('det_ruangan_id');
+							var dataNama = $(this).data('nama');
+							var satuan = $(this).val();
+							$.each(options.data, function (index, _data) {
+								if (_data.nama == dataNama) {
+									options.data[index].satuan = satuan;
+									return;
+								}
+							});
+						})))
 				.append($("<td/>", {
 					class: 'text-center'
 				})
-				.append($("<button/>", {
-					type: 'button',
-					class: 'btn btn-danger btn-hapus',
-					text: 'Hapus'
-				})
-					.click(function (event) {
-						options.data.splice(index, 1);
-						options.data.reverse();
-						populateTable();
-					})))
+					.append($("<button/>", {
+						type: 'button',
+						class: 'btn btn-danger btn-hapus',
+						text: 'Hapus'
+					})
+						.click(function (event) {
+							options.data.splice(index, 1);
+							populateTable();
+							console.log(index);
+							console.log(options.data);
+						})))
 				.append($("<input>", {
 					type: "hidden",
 					name: "val_detal_ruangan_id[]",
@@ -568,10 +608,10 @@ let generateInventarisRuangan = (function (settings) {
 			el.append(tr);
 		});
 	}
-	function checkBarang(data, id) {
+	function checkBarang(data, nama) {
 		var index = false;
 		for (var i = 0; i < data.length; i++) {
-			if (data[i].id == id) {
+			if (data[i].nama == nama) {
 				index = i;
 				break;
 			}

@@ -28,10 +28,9 @@
                     <tbody>
                         <tr>
                             <td></td>
-                            <td><input type="text" class="input" id="addNamaInventaris"
-                                    name="addNamaInventaris"></td>
-                            <td><input type="text" class="input" id="addJumlah" name="addJumlah"></td>
-                            <td><input type="text" class="input" id="addSatuan" name="addSatuan"></td>
+                            <td><input type="text" class="input" id="addNamaInventaris"></td>
+                            <td><input type="text" class="input" id="addJumlah"></td>
+                            <td><input type="text" class="input" id="addSatuan"></td>
                             <td>
                                 <button id="btnAddInventarisRuangan" type="button">+</button>
                             </td>
@@ -51,81 +50,91 @@
 
 </div>
 
+<div class="modal fade" id="modal-detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detail Ruangan</h4>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frm-detail" class="form-horizontal">
+                    <div class="form-group ">
+                        <label for="" class="control-label col-lg-3">Ruangan</label>
+                        <div class="col-lg-9">
+                            <input type="text" readonly class="form-control" id="ruangan">
+                        </div>
+                    </div>
+                </form>
 
-<div id="modal-detail" style="display: none;">
-    <div class="box">
-        <div class="box-header"></div>
-        <div class="box-body">
-            <form id="frm-detail" class="form-horizontal">
-                <div class="form-group ">
-                    <label for="" class="control-label col-lg-3">Nama</label>
-                    <div class="col-lg-9">
-                        <input type="text" readonly class="form-control" id="det-nama">
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <label for="" class="control-label col-lg-3">Username</label>
-                    <div class="col-lg-9">
-                        <input type="text" readonly class="form-control" id="det-username">
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <label for="" class="control-label col-lg-3">Email</label>
-                    <div class="col-lg-9">
-                        <input type="text" readonly class="form-control" id="det-email">
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <label for="" class="control-label col-lg-3">Sub Bidang</label>
-                    <div class="col-lg-9">
-                        <input type="text" readonly class="form-control" id="det-subbidang">
-                    </div>
-                </div>
-                <div class="form-group ">
-                    <label for="" class="control-label col-lg-3">Hak Akses</label>
-                    <div class="col-lg-9">
-                        <input type="text" readonly class="form-control" id="det-hak-akses">
-                    </div>
-                </div>
-                <div class="box-footer">
-                    <div class="text-center">
-                        <button data-iziModal-close data-iziModal-transitionOut="bounceOutDown"
-                            class="btn bg-olive">Tutup</button>
-                    </div>
-                </div>
-            </form>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Inventaris</th>
+                            <th>Jumlah</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-detail">
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+            </div>
         </div>
+        <!-- /.modal-content-->
     </div>
+    <!-- /.modal-dialog-->
 </div>
-
-
 @section('js')
     @parent
     <script>
         $(document).ready(function() {
             const a = generateInventarisRuangan({
                 submitData: function(e) {
-                    e.preventDefault();
+
+                    var type = $("input[name='type']").val();
+                    var uri = type == 'new' ? 'store' : type == 'edit' ? 'update' : 'delete';
+                    var URL = SITE_URL + 'private/ruangan/' + uri;
+
                     a.dom.$btnSubmit.attr('disabled', true);
+                    e.preventDefault();
                     var formData = a.dom.$form.serializeArray();
-                    var URL = SITE_URL + 'private/ruangan/store';
                     $.ajax({
                             url: URL,
                             type: 'POST',
                             dataType: 'json',
                             data: formData,
                         })
-                        .done(function(res) {
-                            console.log(res);
-                            if (res.success) {
-                                swalInfo('Berhasil', 'success', 'Berhasil Menambah Data', 2000)
-                                    .then(r => {
-                                        location.href = SITE_URL + 'private/ruangan';
+                        .done(function(resp) {
+
+
+
+                            $('#error-message').html("");
+                            if (resp.status == 'error') {
+                                $("#error-message").html(
+                                    `<div class=\"alert alert-danger\">
+       <strong>Ooops!</strong> Terdapat Error.<br><br>
+       ` +
+                                    resp.messages +
+                                    `
+       </div>
+       `);
+                                $("#modal-ruangan .iziModal-wrap").scrollTop(0);
+                            } else if (resp.status == 'success') {
+                                swalInfo('Berhasil', 'success', '', '2000')
+                                    .then((result) => {
+
+                                        location.reload();
+
                                     })
                             } else {
-
-                                swalInfo('Gagal', 'warning', 'Periksa Input Data', 2000)
-
+                                alert('gagal');
                             }
                         })
                         .fail(function() {
@@ -158,38 +167,48 @@
             },
 
         });
-        $("#modal-detail").iziModal({
-            title: 'Detail Ruangan',
-            subtitle: '',
-            headerColor: '#88A0B9',
-            onOpening: function(modal) {
-                modal.startLoading();
-            },
-            onOpened: function(modal) {
-                modal.stopLoading();
-            },
 
-        });
-        $("#form-ruangan").submit(function(e) {
-            e.preventDefault();
-            submit_ruangan();
-
-        })
         var show_detail = function(id) {
-            axios.get(SITE_URL + id)
-                .then(response => {
-                    res = response.data;
-                    res.subbid = res.subbidang ? res.subbidang.nama : '-';
-                    $("#det-nama").val(res.name);
-                    $("#det-username").val(res.username);
-                    $("#det-email").val(res.email);
-                    $("#det-subbidang").val(res.subbid);
-                    $("#det-hak-akses").val(res.hak_akses);
-                    $("#modal-detail").iziModal("open");
-                })
-                .catch(err => {
+            $tbodyDetail = $("#tbody-detail");
 
-                })
+            $.ajax({
+                type: "POST",
+                url: "{{ site_url('private/ruangan/detail') }}",
+                data: {
+                    id: id
+                },
+                dataType: "JSON",
+                success: function(response) {
+                    var ruangan = response.ruangan;
+
+                    $tbodyDetail.empty();
+                    var noPage = 1;
+                    $.each(ruangan.det_ruangan, function(indexInArray, valueOfElement) {
+                        var tr = $("<tr/>");
+                        tr.append($("<td/>", {
+                                text: noPage++,
+                                class: 'text-center',
+                                style: "vertical-align:middle;"
+                            }))
+                            .append($("<td/>", {
+                                text: valueOfElement.nama_inventaris,
+                                class: 'text-center',
+                                style: "vertical-align:middle;"
+                            }))
+                            .append($("<td/>", {
+                                text: valueOfElement.jumlah + " " + valueOfElement.satuan,
+                                class: 'text-center',
+                                style: "vertical-align:middle;"
+                            }))
+                        $tbodyDetail.append(tr);
+                    });
+
+                    $("#ruangan").val(ruangan.nama);
+                    $("#modal-detail").modal('show');
+                }
+            });
+
+
         }
         var show_modal = function(id) {
             clear_modal();

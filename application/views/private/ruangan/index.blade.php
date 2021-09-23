@@ -44,6 +44,8 @@
 										<td>{{ $ruangan->nama }}</td>
 										<td style="
                                                     width: 1%; white-space: nowrap">
+                                                    <button class="btn btn-info"
+                                                        onclick="show_detail({{ $ruangan->id }})">Detail</button>
                                                     <button class="btn btn-warning"
                                                         onclick="show_modal({{ $ruangan->id }})">Edit</button>
                                                     <button class="btn btn-danger"

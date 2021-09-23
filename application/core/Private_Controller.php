@@ -22,6 +22,7 @@ class Private_Controller extends MY_Controller {
 		$this->load->model('M_roles');
 		$this->load->model('M_ruangan');
 		$this->load->model('M_users');
+		$this->load->model('M_det_ruangan');
 
 		if (!$this->session->userdata('user')) {
 			redirect('login');
