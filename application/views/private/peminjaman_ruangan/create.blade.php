@@ -1,7 +1,27 @@
  @extends('layouts.backend')
  @section('css')
 
+     <style>
+         .col-form-label {
+             font-weight: bold;
+         }
 
+         .form-control:not(input[type="file"]) {
+             border: 1px solid #001100;
+         }
+
+         #file-content {
+             border: 1px solid #e4e7ea;
+             width: 100px;
+             height: 100px;
+             display: block;
+             margin-bottom: 5px;
+         }
+         #file-content > img {
+             width: 100%;
+             height: 100%;
+         }
+     </style>
  @endsection
  @section('content')
      <main class="main">
@@ -14,105 +34,116 @@
                      <div class="col-md-12">
 
                          <div class="card">
-                             <div class="card-header">Form Peminjaman Ruangan
-                             </div>
-                             <div class="card-body">
-                                 <div id="error-message">
+                             <form method="POST" id="frm-create" class="form-horizontal" autocomplete="off"
+                                 enctype="multipart/form-data">
+                                 <div class="card-header"><strong>Form Peminjaman Ruangan</strong>
+                                 </div>
+                                 <div class="row">
+                                     <div id="error-message">
+
+                                     </div>
+                                     <div class="col-md-6">
+                                         <div class="card-body">
+
+
+
+                                             <div class="form-group row">
+                                                 <label class="col-md-4 col-form-label" for="inputNama">Nama </label>
+                                                 <div class="col-md-8">
+                                                     <input required class="form-control date" id="" type="text"
+                                                         name="inputNama" value="">
+                                                 </div>
+                                             </div>
+                                             <div class="form-group row">
+                                                 <label class="col-md-4 col-form-label" for="inputKegiatan">Kegiatan
+                                                 </label>
+                                                 <div class="col-md-8">
+                                                     <input required class="form-control" id="" type="text"
+                                                         name="inputKegiatan" value="">
+                                                 </div>
+                                             </div>
+                                             <div class="form-group row">
+                                                 <label class="col-md-4 col-form-label" for="inputRuangan">Ruangan </label>
+                                                 <div class="col-md-8">
+
+                                                     <select class="form-control" name="inputRuangan" id="inputRuangan">
+                                                         @foreach ($dataRuangan as $ruangan)
+                                                             <option value="{{ $ruangan->id }}">{{ $ruangan->nama }}
+                                                             </option>
+                                                         @endforeach
+                                                     </select>
+
+
+                                                 </div>
+                                             </div>
+
+
+
+
+                                         </div>
+                                     </div>
+                                     <div class="col-md-6">
+                                         <div class="card-body">
+                                             <div class="form-group row" id="data_1">
+                                                 <label class="col-md-4 col-form-label" for="detWaktuMulai">Tanggal </label>
+                                                 <div class="col-md-8">
+                                                     <div class="input-group-date">
+                                                         <input required onkeydown="return false" class="form-control date"
+                                                             id="inputTanggal" type="text" name="inputTanggal" value="">
+
+                                                     </div>
+
+                                                 </div>
+                                             </div>
+                                             <div class="form-group row" id="data_2">
+                                                 <label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Mulai
+                                                 </label>
+                                                 <div class="col-md-8">
+                                                     <div class="input-group clockpicker" id="waktu-mulai">
+                                                         <input required onkeydown="return false" type="text"
+                                                             name="inputWaktuMulai" id="inputWaktuMulai"
+                                                             class="form-control" value="">
+
+                                                     </div>
+
+                                                 </div>
+                                             </div>
+                                             <div class="form-group row" id="data_3">
+                                                 <label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Selesai
+                                                 </label>
+                                                 <div class="col-md-8">
+                                                     <div class="input-group clockpicker" id="waktu-selesai">
+                                                         <input required onkeydown="return false" type="text"
+                                                             name="inputWaktuSelesai" id="inputWaktuSelesai"
+                                                             class="form-control" value="">
+
+                                                     </div>
+
+                                                 </div>
+                                             </div>
+                                             <div class="form-group row" id="data_3">
+                                                 <label class="col-md-4 col-form-label" for="inputSyaratt">Syarat Foto KTM
+                                                 </label>
+                                                 <div class="col-md-8">
+                                                     <div id="file-content">
+                                                         <img src="" alt="">
+                                                     </div>
+
+                                                     <input type="file" class="form-control" id="inputSyarat"
+                                                         name="inputSyarat" onchange="previewImage()">
+
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
 
                                  </div>
-                                 <form method="POST" id="frm-create" class="form-horizontal" autocomplete="off"
-                                     enctype="multipart/form-data">
+                                 <div class="card-footer text-right">
 
-                                     <div class="form-group row">
-                                         <label class="col-md-4 col-form-label" for="inputNama">Nama </label>
-                                         <div class="col-md-8">
+                                     <button class="btn btn-primary mr-1 " id="btnTerima" type="submit">Submit</button>
+                                 </div>
 
-                                             <div class="input-group-date">
-                                                 <input required class="form-control date" id="" type="text"
-                                                     name="inputNama" value="">
-
-                                             </div>
-
-                                         </div>
-                                     </div>
-                                     <div class="form-group row">
-                                         <label class="col-md-4 col-form-label" for="inputKegiatan">Kegiatan </label>
-                                         <div class="col-md-8">
-
-                                             <div class="input-group-date">
-                                                 <input required class="form-control date" id="" type="text"
-                                                     name="inputKegiatan" value="">
-
-                                             </div>
-
-
-                                         </div>
-                                     </div>
-                                     <div class="form-group row">
-                                         <label class="col-md-4 col-form-label" for="inputRuangan">Ruangan </label>
-                                         <div class="col-md-8">
-
-                                             <select class="form-control" name="inputRuangan" id="inputRuangan">
-                                                 @foreach ($dataRuangan as $ruangan)
-                                                     <option value="{{ $ruangan->id }}">{{ $ruangan->nama }}</option>
-                                                 @endforeach
-                                             </select>
-
-
-                                         </div>
-                                     </div>
-                                     <div class="form-group row" id="data_1">
-                                         <label class="col-md-4 col-form-label" for="detWaktuMulai">Tanggal </label>
-                                         <div class="col-md-8">
-                                             <div class="input-group-date">
-                                                 <input required onkeydown="return false" class="form-control date"
-                                                     id="inputTanggal" type="text" name="inputTanggal" value="">
-
-                                             </div>
-
-                                         </div>
-                                     </div>
-                                     <div class="form-group row" id="data_2">
-                                         <label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Mulai </label>
-                                         <div class="col-md-8">
-                                             <div class="input-group clockpicker" id="waktu-mulai">
-                                                 <input required onkeydown="return false" type="text" name="inputWaktuMulai"
-                                                     id="inputWaktuMulai" class="form-control" value="">
-
-                                             </div>
-
-                                         </div>
-                                     </div>
-                                     <div class="form-group row" id="data_3">
-                                         <label class="col-md-4 col-form-label" for="detWaktuMulai">Waktu Selesai </label>
-                                         <div class="col-md-8">
-                                             <div class="input-group clockpicker" id="waktu-selesai">
-                                                 <input required onkeydown="return false" type="text"
-                                                     name="inputWaktuSelesai" id="inputWaktuSelesai" class="form-control"
-                                                     value="">
-
-                                             </div>
-
-                                         </div>
-                                     </div>
-                                     <div class="form-group row" id="data_3">
-                                         <label class="col-md-4 col-form-label" for="inputSyarat">Syarat Foto KTM </label>
-                                         <div class="col-md-8">
-                                             <div class="input-group " id="syarat">
-                                                 <input type="file" class="form-control" id="inputSyarat"
-                                                     name="inputSyarat">
-                                             </div>
-
-                                         </div>
-                                     </div>
-                                     <div class="card-footer text-right">
-
-                                         <button class="btn btn-primary mr-1 " id="btnTerima" type="submit">Submit</button>
-                                     </div>
-
-
-                                 </form>
-                             </div>
+                             </form>
                          </div>
                          <div class="card">
                              <div class="card-header">Daftar Peminjaman <span
@@ -308,6 +339,15 @@
                  });
 
          }
+
+         var previewImage = function() {
+             var oFReader = new FileReader();
+             oFReader.readAsDataURL(document.getElementById("inputSyarat").files[0]);
+
+             oFReader.onload = function(oFREvent) {
+                 $("#file-content").find('img').attr('src', oFREvent.target.result);
+             };
+         };
      </script>
 
 

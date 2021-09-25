@@ -24,8 +24,7 @@
 
                                 <div class="card-header-actions">
                                     <button type="button" class="btn btn-primary" id="btn-create"
-                                        onclick="location.href='{{ site_url('private/peminjaman_ruangan/create') }}'">Pinjam
-                                        Ruangan</button>
+                                        onclick="location.href='{{ site_url('private/peminjaman_ruangan/create') }}'">Tambah Peminjaman</button>
                                 </div>
 
                             </div>
