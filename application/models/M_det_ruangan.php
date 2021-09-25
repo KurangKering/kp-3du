@@ -10,7 +10,7 @@ class M_det_ruangan extends Eloquent
 		'jumlah',
 		'satuan'
 	];
-
+	public $timestamps = false;
 
 	public function ruangan()
 	{

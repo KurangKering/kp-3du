@@ -459,7 +459,7 @@ let genPermintaanInventaris = (function (settings) {
 });
 
 
-let generateInventarisRuangan = (function (settings) {
+let generateInventarisRuangan = function (settings) {
 	//options
 	var options = $.extend({
 		data: [],
@@ -513,100 +513,87 @@ let generateInventarisRuangan = (function (settings) {
 		var data = options.data;
 		var el = options.dom.$content;
 		emptyTable(el);
-		$.each(data.slice(), function (index, val) {
-			val.det_ruangan_id = val.det_ruangan_id || "undefined";
+			$.each(data.slice(), function (index, val) {
+				val.det_ruangan_id = val.det_ruangan_id || "undefined";
+				let nama = val.nama;
+				let satuan = val.satuan;
+				let jumlah = val.jumlah;
+				let noPage = index + 1;
 
-			var noPage = index + 1;
-			var tr = $("<tr/>");
-			tr.append($("<td/>", {
-				text: noPage,
-				class: 'text-center',
-				style: "vertical-align:middle;"
-			}))
-				.append($("<td/>", {
+				var tr = $("<tr/>");
+				tr.append($("<td/>", {
+					text: noPage,
+					class: 'text-center',
 					style: "vertical-align:middle;"
-				})
-					.append($("<input/>", {
-						type: 'text',
-						name: 'val_nama[]',
-						attr: {
-							'readonly': true,
-
-						},
-						value: val.nama,
-						class: 'form-control',
-					})))
-				.append($("<td/>", {
-					class: 'text-center'
-				})
-					.append($("<input/>", {
-						type: 'number',
-						name: 'val_jumlah[]',
-						attr: {
-							'data-det_ruangan_id': val.det_ruangan_id,
-							'data-nama': val.nama,
-
-						},
-						value: val.jumlah,
-						class: 'form-control',
+				}))
+					.append($("<td/>", {
+						style: "vertical-align:middle;"
 					})
-						.keyup(function (e) {
-							var dataID = $(this).data('det_ruangan_id');
-							var dataNama = $(this).data('nama');
-							var jumlah = $(this).val();
-							$.each(options.data, function (index, _data) {
-								if (_data.nama == dataNama) {
-									options.data[index].jumlah = jumlah;
-									return;
-								}
-							});
-						})))
-				.append($("<td/>", {
-					style: "vertical-align:middle;"
-				})
-					.append($("<input/>", {
-						type: 'text',
-						name: 'val_satuan[]',
-						attr: {
-							'data-det_ruangan_id': val.det_ruangan_id,
-							'data-nama': val.nama,
+						.append($("<input/>", {
+							type: 'text',
+							name: 'val_nama[]',
+							attr: {
+								'readonly': true,
 
-						},
-						value: val.satuan,
-						class: 'form-control',
-					})
-						.keyup(function (e) {
-							var dataID = $(this).data('det_ruangan_id');
-							var dataNama = $(this).data('nama');
-							var satuan = $(this).val();
-							$.each(options.data, function (index, _data) {
-								if (_data.nama == dataNama) {
-									options.data[index].satuan = satuan;
-									return;
-								}
-							});
+							},
+							value: nama,
+							class: 'form-control',
 						})))
-				.append($("<td/>", {
-					class: 'text-center'
-				})
-					.append($("<button/>", {
-						type: 'button',
-						class: 'btn btn-danger btn-hapus',
-						text: 'Hapus'
+					.append($("<td/>", {
+						class: 'text-center'
 					})
-						.click(function (event) {
-							options.data.splice(index, 1);
-							populateTable();
-							console.log(index);
-							console.log(options.data);
-						})))
-				.append($("<input>", {
-					type: "hidden",
-					name: "val_detal_ruangan_id[]",
-					value: val.det_ruangan_id
-				}));
-			el.append(tr);
-		});
+						.append($("<input/>", {
+							type: 'number',
+							name: 'val_jumlah[]',
+							value: jumlah,
+							class: 'form-control',
+						})
+							.keyup(function (e) {
+								$.each(options.data, function (index, _data) {
+									if (_data.nama == nama) {
+										options.data[index].jumlah = jumlah;
+										return;
+									}
+								});
+							})))
+					.append($("<td/>", {
+						style: "vertical-align:middle;"
+					})
+						.append($("<input/>", {
+							type: 'text',
+							name: 'val_satuan[]',
+							value: satuan,
+							class: 'form-control',
+						})
+							.keyup(function (e) {
+								var dataNama = $(this).data('nama');
+								$.each(options.data, function (index, _data) {
+									if (_data.nama == dataNama) {
+										options.data[index].satuan = satuan;
+										return;
+									}
+								});
+							})))
+					.append($("<td/>", {
+						class: 'text-center'
+					})
+						.append($("<button/>", {
+							type: 'button',
+							class: 'btn btn-danger btn-hapus',
+							text: 'Hapus'
+						})
+							.click(function (event) {
+								options.data.splice(index, 1);
+								populateTable();
+							})))
+					.append($("<input>", {
+						type: "hidden",
+						name: "val_detail_ruangan_id[]",
+						value: val.id
+					}));
+				el.append(tr);
+			});
+
 	}
 	function checkBarang(data, nama) {
 		var index = false;
@@ -620,15 +607,15 @@ let generateInventarisRuangan = (function (settings) {
 	}
 	function emptyTable(el) {
 		el.empty();
-	}
-	(function () {
-		populateTable();
-	})();
+	};
+
+	
 	return {
 		dom: options.dom,
 		data: options.data,
+		options: options,
 		validasiBarang: validasiBarang,
 		populateTable: populateTable,
 		emptyTable: emptyTable,
 	}
-});
+};

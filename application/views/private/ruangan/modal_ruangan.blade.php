@@ -1,5 +1,5 @@
 <div id="modal-ruangan" style="display: none;">
-    <form id="form-ruangan">
+    <form id="form-ruangan" class="form-horizontal">
         <input type="hidden" name="id" value="">
         <input type="hidden" name="type" value="get">
         <div class="card">
@@ -7,11 +7,13 @@
                 <div id="error-message">
 
                 </div>
-                <div class="form-group">
-                    <label>Nama Ruangan</label>
-                    <input type="text" name="nama" id="nama" class="form-control">
-                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Nama Ruangan</label>
+                    <div class="col-md-9">
+                        <input type="text" name="nama" id="nama" class="form-control">
 
+                    </div>
+                </div>
 
                 <table class="table">
                     <thead>
@@ -62,15 +64,16 @@
             </div>
             <div class="modal-body">
                 <form id="frm-detail" class="form-horizontal">
-                    <div class="form-group ">
-                        <label for="" class="control-label col-lg-3">Ruangan</label>
-                        <div class="col-lg-9">
-                            <input type="text" readonly class="form-control" id="ruangan">
+
+                    <div class="form-group row">
+                        <label class="col-md-4 col-sm-12 col-form-label"><strong>Nama Ruangan</strong></label>
+                        <div class="col-md-7 col-sm-12">
+                            <p class="form-control-static" style="margin-top: 6px">: <span id="detail-nama"></span></p>
                         </div>
                     </div>
                 </form>
-
-                <table class="table">
+                <hr>
+                <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -95,7 +98,7 @@
     @parent
     <script>
         $(document).ready(function() {
-            const a = generateInventarisRuangan({
+            a = generateInventarisRuangan({
                 submitData: function(e) {
 
                     var type = $("input[name='type']").val();
@@ -188,11 +191,11 @@
                         tr.append($("<td/>", {
                                 text: noPage++,
                                 class: 'text-center',
-                                style: "vertical-align:middle;"
+                                style: "vertical-align:middle; font-weight:bold"
                             }))
                             .append($("<td/>", {
                                 text: valueOfElement.nama_inventaris,
-                                class: 'text-center',
+                                class: 'text-left',
                                 style: "vertical-align:middle;"
                             }))
                             .append($("<td/>", {
@@ -203,7 +206,7 @@
                         $tbodyDetail.append(tr);
                     });
 
-                    $("#ruangan").val(ruangan.nama);
+                    $("#detail-nama").text(ruangan.nama);
                     $("#modal-detail").modal('show');
                 }
             });
@@ -253,6 +256,9 @@
             $("#error-message").html("");
             $("input[name='id']").val(data.id);
             $("input[name='nama']").val(data.nama);
+
+            a.options.data = data.det_ruangan;
+            a.populateTable();
             $("#modal-ruangan").iziModal('open');
             $("#modal-ruangan .iziModal-wrap").scrollTop(0);
         }
@@ -317,13 +323,16 @@
             }).then((result) => {
                 if (result.value) {
                     $.ajax({
-                            url: SITE_URL + 'private/ruangan/delete/ruangan/' + id,
-                            type: 'GET',
+                            url: SITE_URL + 'private/ruangan/delete',
+                            type: 'POST',
                             dataType: 'json',
+                            data: {
+                                id: id
+                            },
 
                         })
                         .done(function(data) {
-
+                            console.log('welcome');
                             swalInfo('Berhasil', 'success', '', '2000')
                                 .then((res) => {
 
