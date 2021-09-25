@@ -2,6 +2,7 @@
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use Illuminate\Database\Capsule\Manager as DB;
+use Mpdf\Mpdf;
 
 class Peminjaman_Ruangan extends Private_Controller
 {
@@ -257,10 +258,9 @@ class Peminjaman_Ruangan extends Private_Controller
 		$dataPeminjaman = $this->M_peminjaman_ruangan
 			->with('det_peminjaman_ruangan');
 
-		$query = DB::table('det_peminjaman_barang')
-			->select(DB::raw('daftar_barang.nama_barang, SUM(det_peminjaman_barang.jumlah) AS jumlah, daftar_barang.satuan'))
-			->join('peminjaman_barang', 'det_peminjaman_barang.peminjaman_barang_id', '=', 'peminjaman_barang.id')
-			->join('daftar_barang', 'det_peminjaman_barang.daftar_barang_id', '=', 'daftar_barang.id');
+		$query = DB::table('peminjaman_ruangan as pr')
+			->select(DB::raw('pr.nama as nama_peminjam, pr.kegiatan, pr.waktu_mulai, pr.waktu_selesai, r.nama AS nama_ruangan,pr.status'))
+			->join('ruangan as r', 'pr.ruangan_id', '=', 'r.id');
 
 		$tahun = null;
 		if (!empty($inputTahun)) {
@@ -273,17 +273,16 @@ class Peminjaman_Ruangan extends Private_Controller
 			$query = $query->whereMonth('waktu_mulai', '=', (int) $inputBulan);
 			$bulan = $inputBulan;
 		}
-		$query = $query->groupBy('det_peminjaman_barang.daftar_barang_id');
 		$dataPeminjaman = $query->get();
 
 		$bulan = $bulan != null ? hBulanHuman($inputBulan) : null;
 		$tahun = $tahun;
-		$title = "Rekap Peminjaman Barang";
+		$title = "Rekap Peminjaman Ruangan";
 		$title = $bulan ? $title .= " Bulan {$bulan}" : $title;
-		$title = $tahun ? $title .= " Tahun {$bulan}" : $title;
+		$title = $tahun ? $title .= " Tahun {$tahun}" : $title;
 
-		$subtitleBulan = !empty($bulan) ? "Bulan {$bulan}" : "";
-		$subtitleTahun = !empty($tahun) ? "Tahun {$tahun}" : "";
+		$subtitleBulan = !empty($bulan) ? "Bulan <strong>{$bulan}</strong>" : "";
+		$subtitleTahun = !empty($tahun) ? "Tahun <strong>{$tahun}</strong>" : "";
 		$subtitles = [];
 
 		array_push($subtitles, $subtitleBulan);
@@ -299,7 +298,7 @@ class Peminjaman_Ruangan extends Private_Controller
 			'dataPeminjaman' => $dataPeminjaman,
 		];
 
-		$view = $this->load->view('private/peminjaman_barang/rekap', $data, true);
+		$view = $this->load->view('private/peminjaman_ruangan/rekap', $data, true);
 
 		$mpdf = new Mpdf();
 

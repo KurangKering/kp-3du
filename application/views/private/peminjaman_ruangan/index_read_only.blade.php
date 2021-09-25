@@ -23,9 +23,7 @@
                                 <span class="h3">Data Peminjaman Ruangan</span>
 
                                 <div class="card-header-actions">
-                                    <button type="button" class="btn btn-primary" id="btn-create"
-                                        onclick="location.href='{{ site_url('private/peminjaman_ruangan/create') }}'">Pinjam
-                                        Ruangan</button>
+                                    <button type="button" class="btn btn-primary" onclick="show_rekap()">Cetak</button>
                                 </div>
 
                             </div>
@@ -68,25 +66,25 @@
                                                                 if ($peminjaman->lembar_disposisi->status == '1') {
                                                                     $statDis =
                                                                         '
-                                                                                                                                                                                                <button onclick="show_disposisi(' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button onclick="show_disposisi(' .
                                                                         $peminjaman->lembar_disposisi->id .
                                                                         ')" class="btn btn-md btn-block btn-warning" type="button">
-                                                                                                                                                                                                <span>
-                                                                                                                                                                                                <i class="icon-reload icons font-2xl d-block"></i>
-                                                                                                                                                                                                </span>
-                                                                                                                                                                                                </button>
-                                                                                                                                                                                                ';
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-reload icons font-2xl d-block"></i>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ';
                                                                 } elseif ($peminjaman->lembar_disposisi->status == '2') {
                                                                     $statDis =
                                                                         '
-                                                                                                                                                                                                <button onclick="show_disposisi(' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button onclick="show_disposisi(' .
                                                                         $peminjaman->lembar_disposisi->id .
                                                                         ')" class="btn btn-md btn-block btn-success" type="button">
-                                                                                                                                                                                                <span>
-                                                                                                                                                                                                <i class="icon-check icons font-2xl d-block"></i>
-                                                                                                                                                                                                </span>
-                                                                                                                                                                                                </button>
-                                                                                                                                                                                                ';
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-check icons font-2xl d-block"></i>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ';
                                                                 }
                                                             @endphp
                                                             {!! $statDis !!}
@@ -118,7 +116,7 @@
             <div class="modal-content">
                 <form id="form-rekap">
                     <div class="modal-header">
-                        <h4 class="modal-title">Rekap Data Peminjaman Barang</h4>
+                        <h4 class="modal-title">Rekap Data Peminjaman Ruangan</h4>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
@@ -181,6 +179,11 @@
 
             $("#modal-rekap").modal('hide');
         });
+
+        var show_rekap = function(e) {
+            $("#modal-rekap").modal('show');
+
+        }
     </script>
 
 

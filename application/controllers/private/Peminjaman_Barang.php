@@ -378,36 +378,32 @@ class Peminjaman_Barang extends Private_Controller
 		$inputTahun = $this->input->get('inputTahun');
 		$inputBulan = $this->input->get('inputBulan');
 
-		$dataPeminjaman = $this->M_peminjaman_barang
-			->with('det_peminjaman_barang');
-
-		$query = DB::table('det_peminjaman_barang')
-			->select(DB::raw('daftar_barang.nama_barang, SUM(det_peminjaman_barang.jumlah) AS jumlah, daftar_barang.satuan'))
-			->join('peminjaman_barang', 'det_peminjaman_barang.peminjaman_barang_id', '=', 'peminjaman_barang.id')
-			->join('daftar_barang', 'det_peminjaman_barang.daftar_barang_id', '=', 'daftar_barang.id');
+		$query = DB::table('peminjaman_barang as pb')
+			->select(DB::raw('pb.id, dpb.id AS det_peminjaman_barang_id, pb.nama, pb.kegiatan, db.nama_barang, dpb.jumlah, db.satuan, pb.waktu_mulai, pb.waktu_selesai, pb.status'))
+			->join('det_peminjaman_barang as dpb', 'pb.id', '=', 'dpb.peminjaman_barang_id')
+			->join('daftar_barang as db', 'dpb.daftar_barang_id', '=', 'db.id')
+			->orderByRaw('id, det_peminjaman_barang_id');
 
 		$tahun = null;
 		if (!empty($inputTahun)) {
 			$query = $query->whereYear('waktu_mulai', '=', (int) $inputTahun);
 			$tahun = $inputTahun;
 		}
-
 		$bulan = null;
 		if (!empty($inputBulan)) {
 			$query = $query->whereMonth('waktu_mulai', '=', (int) $inputBulan);
 			$bulan = $inputBulan;
 		}
-		$query = $query->groupBy('det_peminjaman_barang.daftar_barang_id');
 		$dataPeminjaman = $query->get();
-
+		$dataPeminjaman = $dataPeminjaman->groupBy('id');
 		$bulan = $bulan != null ? hBulanHuman($inputBulan) : null;
 		$tahun = $tahun;
 		$title = "Rekap Peminjaman Barang";
 		$title = $bulan ? $title .= " Bulan {$bulan}" : $title;
 		$title = $tahun ? $title .= " Tahun {$bulan}" : $title;
 
-		$subtitleBulan = !empty($bulan) ? "Bulan {$bulan}" : "";
-		$subtitleTahun = !empty($tahun) ? "Tahun {$tahun}" : "";
+		$subtitleBulan = !empty($bulan) ? "Bulan <strong>{$bulan}</strong>" : "";
+		$subtitleTahun = !empty($tahun) ? "Tahun <strong>{$tahun}</strong>" : "";
 		$subtitles = [];
 
 		array_push($subtitles, $subtitleBulan);
@@ -422,10 +418,9 @@ class Peminjaman_Barang extends Private_Controller
 			'tahun' => $tahun,
 			'dataPeminjaman' => $dataPeminjaman,
 		];
-
 		$view = $this->load->view('private/peminjaman_barang/rekap', $data, true);
 
-		$mpdf = new Mpdf();
+		$mpdf = new Mpdf(['orientation' => 'L']);
 
 		$mpdf->SetTitle($title);
 		$mpdf->WriteHTML($view);

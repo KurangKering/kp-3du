@@ -31,7 +31,7 @@
 <body>
     <div style="text-align: center; margin-bottom: 5mm;">
         <p style="font-size: 18px; margin:0;">
-            <strong> REKAP PEMINJAMAN BARANG <br>
+            <strong> REKAP PEMINJAMAN RUANGAN <br>
                 FAKULTAS PSIKOLOGI
             </strong>
 
@@ -45,14 +45,13 @@
             <tr>
                 <th>No</th>
                 <th style="">Nama Peminjam</th>
+                <th style="">Ruangan</th>
+                <th style="">Kegiatan</th>
                 <th style="">Tanggal Mulai</th>
                 <th style="">Tanggal Selesai</th>
-                <th style="">Daftar Barang</th>
-                <th style="">Jumlah Peminjaman</th>
                 <th style="">Ket</th>
             </tr>
         </thead>
-        <tbody>
             <?php if (count($dataPeminjaman) < 1) : ?>
                 <tr>
                     <td></td>
@@ -65,40 +64,16 @@
                 </tr>
             <?php endif ?>
             <?php $nomor = 1; ?>
-            <?php foreach ($dataPeminjaman as $idPeminjaman => $data) : ?>
-                <?php $jumlahData = count($data); ?>
+            <?php foreach ($dataPeminjaman as $key => $data) : ?>
                 <tr>
-                    <td rowspan="<?= $jumlahData ?>" style="text-align: center;"><?php echo $nomor++; ?></td>
-                    <td rowspan="<?= $jumlahData ?>">
-                        <?php echo $data[0]->nama ?>
-                    </td>
-                    <td rowspan="<?= $jumlahData ?>">
-                        <?php echo indoDate($data[0]->waktu_mulai, 'd-m-Y\, H:i', 'WIB') ?>
-                    </td>
-                    <td rowspan="<?= $jumlahData ?>">
-                        <?php echo indoDate($data[0]->selesai, 'd-m-Y\, H:i', 'WIB') ?>
-                    </td>
-                    <td style="text-align: left;">
-                        <?php echo $data[0]->nama_barang ?>
-                    </td>
-                    <td style="text-align: center;">
-                        <?php echo $data[0]->jumlah . " " . $data[0]->satuan; ?>
-                    </td>
-                    <td rowspan="<?= $jumlahData ?>" style="white-space: nowrap; column-width: auto;">
-                        <?php echo hStatusPeminjamanBarang($data[0]->status) ?>
-                    </td>
+                    <td><?php echo $nomor++; ?></td>
+                    <td><?php echo $data->nama_peminjam ?></td>
+                    <td><?php echo $data->nama_ruangan ?></td>
+                    <td><?php echo $data->kegiatan ?></td>
+                    <td><?php echo $data->waktu_mulai ?></td>
+                    <td><?php echo $data->waktu_selesai ?></td>
+                    <td><?php echo hStatusPeminjaman($data->status) ?></td>
                 </tr>
-                <?php unset($data[0]); ?>
-                <?php foreach ($data as $item => $sisa) : ?>
-                    <tr>
-                        <td style="text-align: left;">
-                            <?php echo $sisa->nama_barang ?>
-                        </td>
-                        <td style="text-align: center;">
-                            <?php echo $sisa->jumlah . " " . $sisa->satuan; ?>
-                        </td>
-                    </tr>
-                <?php endforeach ?>
             <?php endforeach ?>
         </tbody>
     </table>

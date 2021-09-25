@@ -60,11 +60,13 @@ class Private_Controller extends MY_Controller {
 				'peminjaman_ruangan.rekap',
 				'peminjaman_barang.rekap',
 				'peminjaman_barang.indexReadOnly',
+				'peminjaman_ruangan.indexReadOnly',
 			],
 			'dekan' => [
 				'dashboard.*',
 				'peminjaman_ruangan.rekap',
 				'peminjaman_barang.rekap',
+				'peminjaman_ruangan.indexReadOnly',
 				'peminjaman_barang.indexReadOnly',
 
 			],
