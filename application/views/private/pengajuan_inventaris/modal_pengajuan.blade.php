@@ -8,7 +8,8 @@
 
                   </div>
                   <div class="form-group">
-                      <label>Tanggal</label>
+                      <label><strong>Tanggal</strong></label>
+
                       <input type="text" name="tanggal" onkeydown="return false" id="tanggal" class="form-control">
                   </div>
 
@@ -139,7 +140,7 @@
                   el.append(tr);
                   noPage++;
               });
-
+              console.log(data);
               if (data.status != 0) {
                   $(".submit-area").hide();
 

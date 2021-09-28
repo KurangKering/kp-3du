@@ -3,6 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 use Mpdf\Mpdf;
+use Illuminate\Database\Capsule\Manager as DB;
+
 
 class Permintaan_Inventaris extends Private_Controller
 {
@@ -192,6 +194,9 @@ class Permintaan_Inventaris extends Private_Controller
 					$detPermintaan->save();
 				}
 			}
+
+			$permintaan->nama = $post['nama'];
+			$permintaan->save();
 		}
 
 
@@ -245,6 +250,61 @@ class Permintaan_Inventaris extends Private_Controller
 		$mpdf->SetTitle("Cetak Permintaan Inventaris #{$id}");
 		$mpdf->WriteHTML($view);
 		$mpdf->Output("Daftar Permintaan Inventaris #{$id}.pdf", 'I');
+	}
+
+	
+	public function rekap()
+	{
+		$inputTahun = $this->input->get('inputTahun');
+		$inputBulan = $this->input->get('inputBulan');
+
+		$query = DB::table('permintaan_inventaris as pi')
+			->select(DB::raw('pi.id, dpi.id AS det_permintaan_inventaris_id, pi.nama, pi.tanggal, di.nama as nama_inventaris, dpi.jumlah, di.satuan'))
+			->join('det_permintaan_inventaris as dpi', 'pi.id', '=', 'dpi.permintaan_inventaris_id')
+			->join('daftar_inventaris as di', 'dpi.daftar_inventaris_id', '=', 'di.id')
+			->orderByRaw('id, det_permintaan_inventaris_id');
+
+		$tahun = null;
+		if (!empty($inputTahun)) {
+			$query = $query->whereYear('tanggal', '=', (int) $inputTahun);
+			$tahun = $inputTahun;
+		}
+		$bulan = null;
+		if (!empty($inputBulan)) {
+			$query = $query->whereMonth('tanggal', '=', (int) $inputBulan);
+			$bulan = $inputBulan;
+		}
+		$dataPermintaan = $query->get();
+		$dataPermintaan = $dataPermintaan->groupBy('id');
+		$bulan = $bulan != null ? hBulanHuman($inputBulan) : null;
+		$tahun = $tahun;
+		$title = "Rekap Permintaan Inventaris";
+		$title = $bulan ? $title .= " Bulan {$bulan}" : $title;
+		$title = $tahun ? $title .= " Tahun {$bulan}" : $title;
+
+		$subtitleBulan = !empty($bulan) ? "Bulan <strong>{$bulan}</strong>" : "";
+		$subtitleTahun = !empty($tahun) ? "Tahun <strong>{$tahun}</strong>" : "";
+		$subtitles = [];
+
+		array_push($subtitles, $subtitleBulan);
+		array_push($subtitles, $subtitleTahun);
+
+
+		$subtitle = implode(' ', array_filter($subtitles));
+
+		$data = [
+			'subtitle' => $subtitle,
+			'bulan' => $bulan,
+			'tahun' => $tahun,
+			'dataPermintaan' => $dataPermintaan,
+		];
+		$view = $this->load->view('private/permintaan_inventaris/rekap', $data, true);
+
+		$mpdf = new Mpdf(['orientation' => 'L']);
+
+		$mpdf->SetTitle($title);
+		$mpdf->WriteHTML($view);
+		$mpdf->Output("{$title}.pdf", 'I');
 	}
 }
 

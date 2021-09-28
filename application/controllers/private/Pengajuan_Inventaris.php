@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+use Mpdf\Mpdf;
+
 class Pengajuan_Inventaris extends Private_Controller {
 
 	public function __construct()
@@ -60,6 +62,7 @@ class Pengajuan_Inventaris extends Private_Controller {
 
 			$formPengajuan = [
 				'tanggal' => date('Y-m-d H:i:s'),
+				'nama' => $post['nama'],
 			];
 			$insertPengajuan = $this->M_pengajuan_inventaris->create($formPengajuan);
 			if ($insertPengajuan) {
@@ -226,6 +229,22 @@ class Pengajuan_Inventaris extends Private_Controller {
 
      	exit;
      }
+	 
+	public function cetak()
+	{
+		$id = $this->input->get('id');
+
+		$dataPengajuan = $this->M_pengajuan_inventaris
+			->with('det_pengajuan_inventaris')
+			->findOrFail($id);
+		$data = [];
+		$view = $this->load->view('private/pengajuan_inventaris/cetak', ['data' => $dataPengajuan], true);
+
+		$mpdf = new Mpdf();
+		$mpdf->SetTitle("Cetak Pengajuan Inventaris #{$id}");
+		$mpdf->WriteHTML($view);
+		$mpdf->Output("Daftar Pengajuan Inventaris #{$id}.pdf", 'I');
+	}
 
  }
 

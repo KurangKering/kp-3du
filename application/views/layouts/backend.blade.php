@@ -39,6 +39,27 @@
             white-space: nowrap;
         }
 
+        .col-form-label {
+            font-weight: bold;
+        }
+
+        .form-control:not(input[type="file"]) {
+            border: 1px solid #001100;
+        }
+
+        #file-content {
+            border: 1px solid #e4e7ea;
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #file-content>img {
+            width: 100%;
+            height: 100%;
+        }
+
     </style>
     @yield('css')
     <script>
@@ -133,7 +154,7 @@
                         </li>
                     @endif
 
-					
+
                     @if (strtolower($currentRole->role_name) == 'kabag tu')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ site_url('private/lembar_disposisi') }}">
@@ -147,27 +168,31 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ site_url('private/peminjaman_ruangan/indexReadOnly') }}">
+                            <a class="nav-link"
+                                href="{{ site_url('private/peminjaman_ruangan/indexReadOnly') }}">
                                 <i class="nav-icon icon-arrow-right"></i> Peminjaman Ruangan
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ site_url('private/peminjaman_barang/indexReadOnly') }}">
+                            <a class="nav-link"
+                                href="{{ site_url('private/peminjaman_barang/indexReadOnly') }}">
                                 <i class="nav-icon icon-arrow-right"></i> Peminjaman Barang
                             </a>
                         </li>
                     @endif
                     @if (strtolower($currentRole->role_name) == 'dekan')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ site_url('private/peminjaman_ruangan/indexReadOnly') }}">
-                            <i class="nav-icon icon-arrow-right"></i> Peminjaman Ruangan
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ site_url('private/peminjaman_barang/indexReadOnly') }}">
-                            <i class="nav-icon icon-arrow-right"></i> Peminjaman Barang
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ site_url('private/peminjaman_ruangan/indexReadOnly') }}">
+                                <i class="nav-icon icon-arrow-right"></i> Peminjaman Ruangan
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                href="{{ site_url('private/peminjaman_barang/indexReadOnly') }}">
+                                <i class="nav-icon icon-arrow-right"></i> Peminjaman Barang
+                            </a>
+                        </li>
                     @endif
                     @if (strtolower($currentRole->role_name) == 'admin')
                         <li class="nav-item">

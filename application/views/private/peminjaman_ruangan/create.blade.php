@@ -2,25 +2,7 @@
  @section('css')
 
      <style>
-         .col-form-label {
-             font-weight: bold;
-         }
-
-         .form-control:not(input[type="file"]) {
-             border: 1px solid #001100;
-         }
-
-         #file-content {
-             border: 1px solid #e4e7ea;
-             width: 100px;
-             height: 100px;
-             display: block;
-             margin-bottom: 5px;
-         }
-         #file-content > img {
-             width: 100%;
-             height: 100%;
-         }
+        
      </style>
  @endsection
  @section('content')

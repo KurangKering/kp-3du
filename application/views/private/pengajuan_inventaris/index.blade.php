@@ -41,6 +41,9 @@
 										<td style="
                                                     width: 1%; white-space: nowrap">
                                                     <button class="btn btn-success"
+                                                        onclick="show_cetak({{ $pengajuan->id }})">
+                                                        <i class="cui-print"></i> Cetak</button>
+                                                    <button class="btn btn-success"
                                                         onclick="show_modal({{ $pengajuan->id }})">Detail</button>
                                                     <button class="btn btn-warning"
                                                         onclick="location.href='{{ site_url('private/pengajuan_inventaris/edit/' . $pengajuan->id) }}'">Edit</button>
@@ -74,6 +77,13 @@
                 "targets": [2]
             }]
         });
+
+        var show_cetak = function(id) {
+            window.open(
+                '{{ site_url('private/pengajuan_inventaris/cetak?id=') }}' + id,
+                '_blank' // <- This is what makes it open in a new window.
+            );
+        }
     </script>
 
 

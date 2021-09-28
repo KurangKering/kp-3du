@@ -7,6 +7,7 @@ class M_permintaan_inventaris extends Eloquent
 	protected $fillable = [
 
 		'tanggal',
+		'nama',
 
 	];
 
