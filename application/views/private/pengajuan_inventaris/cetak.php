@@ -74,8 +74,8 @@
                 <br>
                 <br>
                 <br>
-                <strong>H.A Bukhari, SH. MH <br>
-                    NIP. 19650517 199102 1 001
+                <strong>Dra. Eli Sabrifha, M.Ag <br>
+                    NIP. 1966111119960320001
                 </strong>
             </div>
         </div>
