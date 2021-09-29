@@ -60,6 +60,7 @@ class Permintaan_Inventaris extends Private_Controller
 		if ($this->response->isSuccess()) {
 
 			$formPermintaan = [
+				'nama' => $post['nama'],
 				'tanggal' => date('Y-m-d H:i:s'),
 			];
 			$insertPermintaan = $this->M_permintaan_inventaris->create($formPermintaan);
