@@ -58,6 +58,7 @@ class Private_Controller extends MY_Controller {
 				'lembar_disposisi.*',
 				'isi_disposisi.*',
 				'peminjaman_ruangan.rekap',
+				'peminjaman_ruangan.info.*',
 				'peminjaman_barang.rekap',
 				'peminjaman_barang.indexReadOnly',
 				'peminjaman_ruangan.indexReadOnly',
